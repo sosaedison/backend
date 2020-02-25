@@ -1,5 +1,7 @@
-import static spark.Spark.*;
-/**
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import static spark.Spark.*;/**
  * Some documentation should go here...
  * 
  * You can run this code in any IDE or IDE-like editors,
@@ -13,6 +15,16 @@ import static spark.Spark.*;
  */
 public class Main {
 	public static void main(String[] args) {
-		get("/", (req, res) -> "Hello World");
+		port(80);
+		staticFiles.location("/public/build"); //Sets the location of static files
+
+		get("/home",new Route() { // home route
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				response.type("text/html");
+				response.redirect("index.html", 201);
+				return null;
+			}
+		});
 	}
 }
