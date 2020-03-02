@@ -3,3 +3,8 @@
 *.project*
 *.classpath*
 *.DS_Store
+*.class
+*/static/*
+/classes/*
+./target/*
+*.swp
