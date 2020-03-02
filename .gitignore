@@ -6,3 +6,5 @@
 *.class
 */static/*
 /classes/*
+./target/*
+*.swp
