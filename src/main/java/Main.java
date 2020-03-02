@@ -56,22 +56,19 @@ import static spark.Spark.*;
 
 public class Main {
 
-
     /*
      * Can implement custom 501 handling in the future. 
      */
-    public static void EndpointNotImplemented( Response res ){
+    public static Object EndpointNotImplemented( Request req, Response res ){
         res.status(501); 
+        return null; 
     }
 
 
 	public static void main(String[] args) {
-		
+
         port(80);
-
 		staticFiles.location("/public/build"); //Sets the location of static files
-
-
 
         /*
          * Routes
@@ -89,25 +86,25 @@ public class Main {
 
         path("/api", () -> {
             path("/users", () -> {
-                post("/newuser", EndpointNotImplemented); 
+                post("/newuser",  Main::EndpointNotImplemented ); 
                 path("/:userid", () -> {
-                    get("", EndpointNotImplemted);
-                    get("/favorites", EndpointNotImplmented);
-                    get("/orders", EndpointNotImplemented); 
+                    get("", Main::EndpointNotImplemented );
+                    get("/favorites", Main::EndpointNotImplemented);
+                    get("/orders", Main::EndpointNotImplemented); 
                 });
             });
             path("/restaurant", () -> {
                 path("/:resturantid", () -> {
-                    get("", EndpointNotImplemented); 
-                    get("/orders", EndpointNotImplemented );
-                    get("/tables", EnpointNotImplemented ); 
-                    post("/sitdown", EndpointNotImplemented ); 
-                    post("/orders/submit", EndpointNotImplemented); 
-                    post("orders/complete", EndpointNotImplemented); 
+                    get("", Main::EndpointNotImplemented); 
+                    get("/orders", Main::EndpointNotImplemented);
+                    get("/tables", Main::EndpointNotImplemented); 
+                    post("/sitdown",Main::EndpointNotImplemented); 
+                    post("/orders/submit", Main::EndpointNotImplemented); 
+                    post("orders/complete", Main::EndpointNotImplemented); 
                     path("/menu", () -> {
-                        get("", EndpointNotImplemented ); 
-                        post("/add", EndpointNotImplemented ); 
-                        post("/remove", EndpointNotImplemented); 
+                        get("", Main::EndpointNotImplemented ); 
+                        post("/add", Main::EndpointNotImplemented); 
+                        post("/remove", Main::EndpointNotImplemented); 
                     });
                 });
             });
