@@ -1,3 +1,4 @@
+package AutoGarcon; 
 import static spark.Spark.*; 
 import spark.Request;
 import spark.Response;
@@ -17,10 +18,9 @@ import spark.Response;
  *
  * You *can* refer to the documentation 
  * for information about this API, but as always, 
- * the code is the first source of truth. 
+ * the code is the primary source of truth. 
  * Meaning that it's possible for the documentation to be out of date 
  * But the code will always be current. 
- *
  *
  */
 
@@ -30,42 +30,48 @@ public class Main {
     /*
      * Can implement custom 501 handling in the future. 
      */
-    public static Object EndpointNotImplemented( Request req, Response res ){
+    public static Object endpointNotImplemented( Request req, Response res ){
         res.status(501); 
         return res; 
     }
 
-    public static Object ServeStatic(Request req, Response res) {
+    public static Object serveStatic(Request req, Response res) {
         res.type("text/html");
         res.redirect("index.html", 201);
-        return null;
+        return res;
     }
-    
-    public static void InitRouter(){
 
-		get("/", Main::ServeStatic);
+    public Object addMenu( Request req, Response res){
+
+        res.status(200);
+        return res; 
+    }
+
+    public static void initRouter(){
+
+		get("/", Main::serveStatic);
 
         path("/api", () -> {
             path("/users", () -> {
-                post("/newuser",  Main::EndpointNotImplemented ); 
+                post("/newuser",  Main::endpointNotImplemented ); 
                 path("/:userid", () -> {
-                    get("", Main::EndpointNotImplemented );
-                    get("/favorites", Main::EndpointNotImplemented);
-                    get("/orders", Main::EndpointNotImplemented); 
+                    get("", Main::endpointNotImplemented );
+                    get("/favorites", Main::endpointNotImplemented);
+                    get("/orders", Main::endpointNotImplemented); 
                 });
             });
             path("/restaurant", () -> {
                 path("/:resturantid", () -> {
-                    get("", Main::EndpointNotImplemented); 
-                    get("/orders", Main::EndpointNotImplemented);
-                    get("/tables", Main::EndpointNotImplemented); 
-                    post("/sitdown",Main::EndpointNotImplemented); 
-                    post("/orders/submit", Main::EndpointNotImplemented); 
-                    post("orders/complete", Main::EndpointNotImplemented); 
+                    get("", Main::endpointNotImplemented); 
+                    get("/orders", Main::endpointNotImplemented);
+                    get("/tables", Main::endpointNotImplemented); 
+                    post("/sitdown",Main::endpointNotImplemented); 
+                    post("/orders/submit", Main::endpointNotImplemented); 
+                    post("orders/complete", Main::endpointNotImplemented); 
                     path("/menu", () -> {
-                        get("", Main::EndpointNotImplemented ); 
-                        post("/add", Main::EndpointNotImplemented); 
-                        post("/remove", Main::EndpointNotImplemented); 
+                        get("", Main::endpointNotImplemented ); 
+                        post("/add", Main::endpointNotImplemented); 
+                        post("/remove", Main::endpointNotImplemented); 
                     });
                 });
             });
@@ -73,11 +79,16 @@ public class Main {
     }
 
 
-	public static void main(String[] args) {
+    public static void startServer() {
 
         port(80);
-		staticFiles.location("/public/build"); //Sets the location of static files
-        InitRouter(); 
+		staticFiles.location("/public/build"); 
+        initRouter(); 
+        DBUtil.connectToDB(); 
+    }
+
+	public static void main(String[] args) {
+        startServer(); 
 
 	}
 }

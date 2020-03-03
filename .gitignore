@@ -5,6 +5,5 @@
 *.DS_Store
 *.class
 */static/*
-/classes/*
-./target/*
+./target
 *.swp
