@@ -15,6 +15,13 @@ public class TimeRange {
     private int startTime; 
     private int endTime; 
 
+    public TimeRange(int start, int stop ){
+
+        this.startTime = start; 
+        this.endTime = stop; 
+    }
+
+
     private boolean isInRange( int time ){
         return false; 
     }

@@ -4,18 +4,17 @@ import spark.Request;
 import spark.Response;
 
 
-/*
- * This progam embodies the backend business logic, and
+/**
+ * Main: This progam embodies the backend business logic, and
  * database interface for the various Auto-Garcon User Interfaces.
  * 
- * @author Tyler Beverley, 
+ * @author  Tyler Beverley, 
  * @author Sosa Edison  
  * @version 0.1
  * @since 2/24/20
  * @see <a href="https://github.com/auto-garcon/documentation/blob/master/APISpecification.md">Documentation</a>;  For API Endpoints. 
  * @see <a href="https://github.com/auto-garcon/backend">README</a>; For build instructions. 
  * 
- *
  * You *can* refer to the documentation 
  * for information about this API, but as always, 
  * the code is the primary source of truth. 
