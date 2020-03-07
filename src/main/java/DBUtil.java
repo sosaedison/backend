@@ -33,14 +33,14 @@ public class DBUtil {
      * Result set's cursor will start just before the first row. 
      * So use ResultSet.next() to get to the first row.
      */
-    public static ResultSet getAllMenu( int restaurantID ){
+    public static ResultSet getMenus( int restaurantID ){
         ResultSet result = null;
         Connection c = connectToDB(); 
         CallableStatement stmt;
 
         try { 
-            stmt = c.prepareCall("{call getMenu(?)}" ); 
-            stmt.setInt( "restaurantID", restaurantID );  
+            stmt = c.prepareCall("{call GetMenusByRestaurantId(?)}" ); 
+            stmt.setInt( "Id", restaurantID );  
 
             boolean hasResult = stmt.execute(); 
 
@@ -66,20 +66,19 @@ public class DBUtil {
      * @return SQL result representing the restaurantID, and menuID.  
      *
      */
-    public static ResultSet getMenu( int restaurantID, int menuID ){
+    public static ResultSet getMenu(int restaurantID, int menuID ){
 
         ResultSet menus; 
         boolean hasResult = false ;
-        menus = getAllMenu( restaurantID ); 
+        menus = getMenus( restaurantID ); 
 
         if( menus == null){
             hasResult = false; 
-            System.out.printf("Failed to find menus for %d.\n", restaurantID);
+            System.out.printf("Failed to find menuid: %d.\n", menuID);
         }
 
         int resultID; 
         do{ 
-
             try {
                 hasResult = menus.next(); 
                 resultID = menus.getInt( "menuID" ); 
@@ -100,13 +99,30 @@ public class DBUtil {
 
     }
 
+    public static ResultSet getMenuItems( int menuID ) {
+
+        System.out.println("get items is not implemented yet");
+        ResultSet result = null; 
+        Connection c = connectToDB(); 
+        CallableStatement stmt;
+
+        try { 
+            stmt = c.prepareCall("{call GetMenuItemsByMenuId(?)}" ); 
+            stmt.setInt( "id", menuID);  
+        } catch (SQLException e){
+            System.out.printf("SQL Exception while preparing getMenu stored Proceedure\n"); 
+        }
+        return result;
+
+    }
+
     public static Connection connectToDB(){
 
         Connection c = null; 
         String baseURL, userName, password, connString; 
         boolean isHost; 
         
-        baseURL = "jdbc:mysql//%s:%s@%s/AutoGarcon"; 
+        baseURL = "jdbc:mysql://%s:%s@%s/AutoGarcon"; 
         userName = getUserName(); 
         password = getPass(); 
         isHost = isHost(); 
@@ -115,37 +131,46 @@ public class DBUtil {
         if( isHost ){
             connString = String.format(baseURL, userName, password, HOST_URL); 
         } else {
-            connString = String.format(baseURL, userName, password, "localhost");   
+            //just use the hosted db for now. 
+            connString = String.format(baseURL, userName, password, HOST_URL);   
         }
 
         try { 
-
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             c = DriverManager.getConnection( connString ); 
 
         } catch( SQLException e ){
             System.out.printf("SQL Exception while trying to connect to the Database.\n" +  
-                    "Exception: " + e.toString() ); 
+                    "Exception: " + e.toString() + "\n" ); 
             System.exit(1);   
 
         } catch( ClassNotFoundException e ){
             System.out.printf("Failed to find the Java Databse Driver for Mysql.\n"); 
             System.exit(1);   
         }
+        System.out.printf("Connected to the hosted database!\n");
         
         return c; 
     }
 
     private static String getUserName() {
-        return System.getenv("DB_USER"); 
+        String username = System.getProperty("DB_USER"); 
+        if( username == null ){
+            System.out.println("WARNING! DB_USER is null."); 
+        }
+        return username;  
     }
 
     private static String getPass(){
-        return System.getenv("DB_PASS");
+        String password = System.getProperty("DB_PASS"); 
+        if( password == null ){
+            System.out.println("WARNING! DB_PASS is null."); 
+        }
+        return password;  
     }
     
     private static boolean isHost(){
-        if( System.getenv("HOST_NAME").isEmpty()) {
+        if( System.getenv("HOST_NAME") == null) {
             return false; 
         } else {
             return true; 
