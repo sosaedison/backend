@@ -6,8 +6,8 @@ import java.sql.*;
 /**
  * DBUtil: Utility functions for interacting with the datbase. 
  * @author Tyler Beverley
- * @param DB_USER - Enviroment variable that holds username for the database. 
- * @param DB_PASS - Enviroment variable that holds the Password for the database. 
+ * @param DB_USER - System Property that holds username for the database. 
+ * @param DB_PASS - System Property that holds the Password for the database. 
  * 
  * Enviroment variables DB_USER and DB_PASS hold the db creditentials.
  * HOST_NAME is used to determine if the program is running on the host. 
@@ -16,7 +16,7 @@ import java.sql.*;
  * Note that the connection obj is not thread safe. So for now we will create 
  * a new one everytime. 
  *
- * TODO: implement Binary Search on a result set for finding a specified menuID. 
+ * TODO: ?implement Binary Search on a result set for finding a specified menuID. 
  *
  */
 public class DBUtil {
@@ -40,7 +40,7 @@ public class DBUtil {
 
         try { 
             stmt = c.prepareCall("{call GetMenusByRestaurantId(?)}" ); 
-            stmt.setInt( "Id", restaurantID );  
+            stmt.setInt( "id", restaurantID );  
 
             boolean hasResult = stmt.execute(); 
 
@@ -50,7 +50,7 @@ public class DBUtil {
             }
 
         } catch( SQLException e ){
-            System.out.printf("Failed to exectue getMenu stored procedure.\n" + 
+            System.out.printf("Failed to exectue GetMenusByRestaurantId stored procedure.\n" + 
                     "Exception: " + e.toString() );
             System.exit(1); 
         }
@@ -64,7 +64,6 @@ public class DBUtil {
      * @param restaurantID
      * @param menuID 
      * @return SQL result representing the restaurantID, and menuID.  
-     *
      */
     public static ResultSet getMenu(int restaurantID, int menuID ){
 
@@ -96,12 +95,15 @@ public class DBUtil {
             }
         } while( hasResult );
         return menus;
+    }
 
+    public static void saveMenu( Menu menu ){
+        System.out.println("saveMenu is not implemented yet"); 
     }
 
     public static ResultSet getMenuItems( int menuID ) {
 
-        System.out.println("get items is not implemented yet");
+        System.out.println("getMenuItems is not implemented yet");
         ResultSet result = null; 
         Connection c = connectToDB(); 
         CallableStatement stmt;
@@ -170,7 +172,7 @@ public class DBUtil {
     }
     
     private static boolean isHost(){
-        if( System.getenv("HOST_NAME") == null) {
+        if( System.getProperty("HOST_NAME") == null) {
             return false; 
         } else {
             return true; 

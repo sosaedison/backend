@@ -2,11 +2,15 @@ package AutoGarcon;
 import static spark.Spark.*; 
 import spark.Request;
 import spark.Response;
+import com.google.gson.JsonSyntaxException;
+
+
 
 
 /**
- * Main: This progam embodies the backend business logic, and
- * database interface for the various Auto-Garcon User Interfaces.
+ * Main:  This class contains all of the logic for 
+ * API routes and their respective handlers.
+ * 
  * 
  * @author  Tyler Beverley, 
  * @author Sosa Edison  
@@ -21,10 +25,10 @@ import spark.Response;
  * Meaning that it's possible for the documentation to be out of date 
  * But the code will always be current. 
  *
+ *
  */
-
-
 public class Main {
+
 
     /*
      * Can implement custom 501 handling in the future. 
@@ -40,9 +44,16 @@ public class Main {
         return res;
     }
 
-    public Object addMenu( Request req, Response res){
+    public static Object addMenu( Request req, Response res) {
+  
+        Menu menu = Menu.menuFromJson( req.body() );   
 
-        res.status(200);
+        if (menu.isEmpty()) {
+            res.status(200);
+        } else {
+            res.status(500); 
+        }
+
         return res; 
     }
 
@@ -69,7 +80,7 @@ public class Main {
                     post("orders/complete", Main::endpointNotImplemented); 
                     path("/menu", () -> {
                         get("", Main::endpointNotImplemented ); 
-                        post("/add", Main::endpointNotImplemented); 
+                        post("/add", "application/json", Main::addMenu); 
                         post("/remove", Main::endpointNotImplemented); 
                     });
                 });
@@ -84,6 +95,8 @@ public class Main {
 		staticFiles.location("/public/build"); 
         initRouter(); 
         DBUtil.connectToDB(); 
+
+        Menu test = new Menu( 1, 1); 
     }
 
 	public static void main(String[] args) {

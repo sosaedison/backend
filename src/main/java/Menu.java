@@ -1,7 +1,16 @@
 package AutoGarcon; 
+import java.lang.reflect.Type; 
 import java.sql.ResultSet; 
-import java.util.ArrayList; 
 import java.sql.SQLException;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.JsonDeserializer; 
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonDeserializationContext; 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.GsonBuilder;
+
 
 /**
  * Menu:  Class that represents information pertaining 
@@ -10,11 +19,9 @@ import java.sql.SQLException;
  * @author Tyler Beverley
  * @author Mitchel Nelson
  */
-
-//public class Menu implements Serializable { 
 public class Menu { 
 
-    public enum Type {
+    public enum MenuType {
         DRINKS, 
         BREAKFAST, 
         BRUNCH, 
@@ -25,8 +32,7 @@ public class Menu {
         OTHER;
     }
 
-
-    public enum Status { 
+    public enum MenuStatus { 
         INACTIVE, 
         ACTIVE, 
         DELETED;
@@ -34,16 +40,29 @@ public class Menu {
 
     private int menuID; 
     private int restaurantID; 
-    private Status status; 
-    private Type type;  
-    private TimeRange timeRanges[]; 
-    private MenuItem menuItems[];  //current db only holds one time range. 
+    private MenuStatus status; 
+    private MenuType type;  
+    private TimeRange timeRanges[]; //current db only holds one time range. 
+    private MenuItem menuItems[];  
     private String name; 
+
+
+
+    /**
+     * Menu: Constructor to create an empty Menu Class.
+     * @return A new Menu Instance with no initalized fields. 
+     *
+     * Use isEmpty() to check if the Menu Instance has been initalized or not. 
+     */
+    public Menu(){
+        this.menuID = 0; 
+        this.restaurantID = 0; 
+        this.name = ""; 
+    }
 
 
     /**
      * Menu:   Constructor for Menu class. 
-     *
      * @param restaurantID id of the restaurant that owns wanted menu. 
      * @param menuID id of the wanted menu.  
      * @return New Menu Object with 
@@ -51,13 +70,13 @@ public class Menu {
      */
     public Menu( int restaurantID, int menuID ){
 
-        ResultSet menu = DBUtil.getMenu(restaurantID, menuID ); 
+        ResultSet menu = DBUtil.getMenu( restaurantID, menuID ); 
 
         if( menu != null ){
             try {
                 this.restaurantID = restaurantID; 
-                this.menuID = menu.getInt("menuID");  
-                //this.type = Type.valueOf( menu.getString( ).toUpperCase() ); 
+                this.menuID = menu.getInt( "menuID" );  
+                //this.type = MenuType.valueOf( menu.getString( ).toUpperCase() ); 
                 this.name = menu.getString("menuName"); 
                 this.timeRanges = new TimeRange[] {
                      new TimeRange( 
@@ -65,7 +84,7 @@ public class Menu {
                             menu.getInt( "stopTime" )
                     )};
                 int statusInt = menu.getInt("menuStatus");
-                this.status = Status.values()[statusInt];
+                this.status = MenuStatus.values()[statusInt];
 
             } catch (SQLException e){
                 System.out.printf("Failed to get the required feilds while creating a menu Object.\n" + 
@@ -75,18 +94,83 @@ public class Menu {
     }
 
     /**
-     * getAllMenuItems: returns an ArrayList of all menuItems
+     * menuFromJson: Create a new Menu objet from Json. . 
+     * @param body JSON String representing the request paramaters for 
+     *  a new Menu Object.
+     * @exception JsonSyntaxException Throws a syntax exception when Gson can
+     *  not deserialize into a Menu Object. 
+     * @return A new Menu Instance from the json Request body. 
      *
-     * @return menuItems ArrayList
      */
-    public MenuItem[] getAllMenuItems(){
-        ArrayList<MenuItem> allItems = new ArrayList<>();
-        return (MenuItem[]) allItems.toArray();
+    public static Menu menuFromJson( String body ) {
+
+        GsonBuilder gsonBuilder = new GsonBuilder(); 
+        //MenuDeserializer mds = null;
+        //gsonBuilder.registerTypeAdapter( Menu.class, deserializer ); 
+        Gson gson = gsonBuilder.create();
+        
+        Menu menu = new Menu(); 
+
+        try { 
+            menu = gson.fromJson( body, Menu.class);
+        } catch (JsonSyntaxException e  ){
+            System.out.printf("Failed to deserialize the request data into a Menu Object.\n" + 
+                    "Request body: %s\n", body );
+        }
+
+        return menu; 
     }
+
+
+    /**
+     * save: Saves the current state of the menu to the databse. 
+     * This is for the /menu/add endpooint.
+     */
+    public void save(){
+        DBUtil.saveMenu( this );
+    }
+
+    public int getMenuID(){
+        return this.menuID; 
+    }
+
+    public int getRestaurantID(){
+        return this.restaurantID; 
+    }
+
+    public TimeRange[] getTimeRange(){
+        return this.timeRanges;
+    }
+
+    public String getName(){
+        return this.name; 
+    }
+
+    public MenuItem[] getMenuItems(){
+        return this.menuItems; 
+    }
+
+
+    /**
+     * isEmpty: Checks if this instance of Menu was initalized
+     * without any data. 
+     * @return true if the instance has no initalized data
+     *  false if otherwise. 
+     *
+     * The instance will not initalized with data when using the constructor with no arguments.  
+     * The Database starts menuIDs at 1. 
+     */
+    public boolean isEmpty() {
+        if( this.menuID == 0){
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+
 
     /**
      * addMenuItem: adds a menuItem to the menu. 
-     *
      * @param newItem menuItem to add
      */
     public void addMenuItem(MenuItem newItem){
@@ -96,15 +180,15 @@ public class Menu {
     /**
      * @return menuType
      */
-    public Type getMenuType(){
+    public MenuType getMenuType(){
         System.out.println("addMenuType is not implemented yet"); 
         return null;
     }
 
     /**
-     * toString: creates a human-readable representation of the full menu with all categories and corresponding menu items
-     * Author:   Mitchell Nelson
-     *
+     * toString: creates a human-readable representation of the 
+     *      full menu with all categories and corresponding menu items
+     * @Author:   Mitchell Nelson
      * @return formatted string
      */
     @Override
@@ -115,5 +199,39 @@ public class Menu {
 
         return str.toString();
     }
+
+
+    /**
+     *
+     *
+     * Implementation Not complete
+     */
+    private class MenuDeserializer implements JsonDeserializer<Menu> {
+
+        public Menu deserialize( 
+                JsonElement json, 
+                Type typeOfT, 
+                JsonDeserializationContext context
+        ) throws JsonParseException {
+
+            System.out.printf("Menu Deserializer is not implemented yet.\n");
+            JsonObject jsonObj = json.getAsJsonObject(); 
+
+            int restaurantID = jsonObj.get("restaurantID").getAsInt();
+            int startTime = jsonObj.get("startTime").getAsInt();  
+            int endTime = jsonObj.get("endTime").getAsInt(); 
+            int menuStatus = jsonObj.get("menuStatus").getAsInt(); 
+            String menuName = jsonObj.get("menuName").getAsString(); 
+            Menu menu = new Menu(); 
+            return menu; 
+
+        }
+
+
+    }
 }
+
+
+
+
 
