@@ -1,71 +1,87 @@
+package AutoGarcon; 
 import static spark.Spark.*; 
 import spark.Request;
 import spark.Response;
+import com.google.gson.JsonSyntaxException;
 
 
-/*
- * This progam embodies the backend business logic, and
- * database interface for the various Auto-Garcon User Interfaces.
+
+
+/**
+ * Main:  This class contains all of the logic for 
+ * API routes and their respective handlers.
  * 
- * @author Tyler Beverley, 
+ * 
+ * @author  Tyler Beverley, 
  * @author Sosa Edison  
  * @version 0.1
  * @since 2/24/20
  * @see <a href="https://github.com/auto-garcon/documentation/blob/master/APISpecification.md">Documentation</a>;  For API Endpoints. 
  * @see <a href="https://github.com/auto-garcon/backend">README</a>; For build instructions. 
  * 
- *
  * You *can* refer to the documentation 
  * for information about this API, but as always, 
- * the code is the first source of truth. 
+ * the code is the primary source of truth. 
  * Meaning that it's possible for the documentation to be out of date 
  * But the code will always be current. 
  *
  *
  */
-
-
 public class Main {
+
 
     /*
      * Can implement custom 501 handling in the future. 
      */
-    public static Object EndpointNotImplemented( Request req, Response res ){
+    public static Object endpointNotImplemented( Request req, Response res ){
         res.status(501); 
         return res; 
     }
 
-    public static Object ServeStatic(Request req, Response res) {
+    public static Object serveStatic(Request req, Response res) {
         res.type("text/html");
         res.redirect("index.html", 201);
-        return null;
+        return res;
     }
-    
-    public static void InitRouter(){
 
-		get("/", Main::ServeStatic);
+    public static Object addMenu( Request req, Response res) {
+  
+        Menu menu = Menu.menuFromJson( req.body() );   
+
+        if (menu.isEmpty()) {
+            res.status(200);
+        } else {
+            res.status(500); 
+        }
+
+        return res; 
+    }
+
+    public static void initRouter(){
+
+		get("/", Main::serveStatic);
 
         path("/api", () -> {
             path("/users", () -> {
-                post("/newuser",  Main::EndpointNotImplemented ); 
+                post("/newuser",  Main::endpointNotImplemented ); 
                 path("/:userid", () -> {
-                    get("", Main::EndpointNotImplemented );
-                    get("/favorites", Main::EndpointNotImplemented);
-                    get("/orders", Main::EndpointNotImplemented); 
+                    get("", Main::endpointNotImplemented );
+                    get("/favorites", Main::endpointNotImplemented);
+                    get("/orders", Main::endpointNotImplemented); 
                 });
             });
             path("/restaurant", () -> {
                 path("/:resturantid", () -> {
-                    get("", Main::EndpointNotImplemented); 
-                    get("/orders", Main::EndpointNotImplemented);
-                    get("/tables", Main::EndpointNotImplemented); 
-                    post("/sitdown",Main::EndpointNotImplemented); 
-                    post("/orders/submit", Main::EndpointNotImplemented); 
-                    post("orders/complete", Main::EndpointNotImplemented); 
+                    get("", Main::endpointNotImplemented); 
+                    get("/orders", Main::endpointNotImplemented);
+                    get("/tables", Main::endpointNotImplemented); 
+                    post("/sitdown",Main::endpointNotImplemented); 
+                    post("/orders/submit", Main::endpointNotImplemented); 
+                    post("orders/complete", Main::endpointNotImplemented); 
                     path("/menu", () -> {
-                        get("", Main::EndpointNotImplemented ); 
-                        post("/add", Main::EndpointNotImplemented); 
-                        post("/remove", Main::EndpointNotImplemented); 
+                        get("", Main::endpointNotImplemented ); 
+                        post("/add", "application/json", Main::addMenu); 
+                        post("/remove", Main::endpointNotImplemented); 
                     });
                 });
             });
@@ -73,11 +89,18 @@ public class Main {
     }
 
 
-	public static void main(String[] args) {
+    public static void startServer() {
 
         port(80);
-		staticFiles.location("/public/build"); //Sets the location of static files
-        InitRouter(); 
+		staticFiles.location("/public/build"); 
+        initRouter(); 
+        DBUtil.connectToDB(); 
+
+        Menu test = new Menu( 1, 1); 
+    }
+
+	public static void main(String[] args) {
+        startServer(); 
 
 	}
 }

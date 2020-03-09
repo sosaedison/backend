@@ -2,11 +2,10 @@
 Business Logic and API for the Auto-Garcon application
 
 # Building
-`mvn install` 
-`mvn package` 
-`mvn exec:java` 
-`sudo mvn exec:java -Dexec.mainClass="Main"`
-
+`mvn install`  
+`mvn package`  
+`sudo mvn --define DB_PASS="[your password]" --define DB_USER="[your username]" -Dexec.mainClass="AutoGarcon.Main" exec:java` 
+  
 run with su because we bind to port 80. 
 
 
