@@ -47,6 +47,8 @@ public class Main {
     public static Object addMenu( Request req, Response res) {
   
         Menu menu = Menu.menuFromJson( req.body() );   
+        menu.save(); 
+        System.out.println(menu.toString());
 
         if (menu.isEmpty()) {
             res.status(200);
@@ -94,9 +96,9 @@ public class Main {
         port(80);
 		staticFiles.location("/public/build"); 
         initRouter(); 
-        DBUtil.connectToDB(); 
+        //DBUtil.connectToDB(); 
 
-        Menu test = new Menu( 1, 1); 
+        //Menu test = new Menu( 1, 1); 
     }
 
 	public static void main(String[] args) {

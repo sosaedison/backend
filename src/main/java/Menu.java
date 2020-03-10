@@ -31,15 +31,12 @@ public class Menu {
     }
 
     private int menuID; 
-
-    private MenuStatus status; 
-    private MenuType type;  
+    private MenuStatus menuStatus; 
+    private MenuType menuType;  
     private int restaurantID; 
     private TimeRange timeRanges[]; //current db only holds one time range. 
     private MenuItem menuItems[];  
     private String name; 
-
-
 
     /**
      * Menu: Constructor to create an empty Menu Class.
@@ -50,7 +47,7 @@ public class Menu {
         this.menuID = 0; 
         this.restaurantID = 0; 
         this.name = ""; 
-        this.status = MenuStatus.INACTIVE;
+        this.menuStatus = MenuStatus.INACTIVE;
     }
 
     /**
@@ -76,7 +73,7 @@ public class Menu {
                             menu.getInt( "stopTime" )
                     )};
                 int statusInt = menu.getInt("menuStatus");
-                this.status = MenuStatus.values()[statusInt];
+                this.menuStatus = MenuStatus.values()[statusInt];
 
             } catch (SQLException e){
                 System.out.printf("Failed to get the required feilds while creating a menu Object.\n" + 
@@ -174,15 +171,17 @@ public class Menu {
     /**
      * toString: creates a human-readable representation of the 
      *      full menu with all categories and corresponding menu items
-     * @Author:   Mitchell Nelson
      * @return formatted string
      */
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
-        str.append("menuType: " + getMenuType().toString() + "\n");
+        str.append("menuType: " + this.menuType.name() + "\n");
         str.append("menuItems:\n");
-
+        for( int i = 0; i < this.menuItems.length; i++ ){
+            String item = String.format("item: %s,\n", this.menuItems[i].toString() );
+            str.append( item );
+        }
         return str.toString();
     }
 
