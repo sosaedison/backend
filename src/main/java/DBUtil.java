@@ -1,5 +1,6 @@
 package AutoGarcon; 
 import java.sql.*; 
+import java.io.File; 
 
 
 
@@ -23,6 +24,16 @@ public class DBUtil {
 
     public final static String HOST_URL = "auto-garcon-database.cd4hzqa9i8mi.us-east-1.rds.amazonaws.com";
     private Connection connection; 
+
+
+    /** 
+     * uploadImage: Uploads the image to google's api. 
+     *
+     *
+     */
+    public static void uploadImage( File file ){
+
+    }
 
 
     /**
