@@ -1,5 +1,5 @@
 # Backend
-Business Logic and API for the Auto-Garcon application
+Business Logic and API for the Auto-Garcon application. To reach us with any concerns, email us at managerwebautogarcon@gmail.com .
 
 # Building
 Make sure you have the java build system maven installed. 
