@@ -20,9 +20,24 @@ public class TimeRange {
         this.startTime = start; 
         this.endTime = stop; 
     }
-
+    
+    public static TimeRange defaultRange() {
+        return new TimeRange( 0, 2400 ); 
+    }
 
     private boolean isInRange( int time ){
-        return false; 
+        boolean result = false; 
+        if( time > this.startTime && time < this.endTime){
+            result = true; 
+        }
+        return result; 
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("Start: " + Integer.toString(this.startTime) + "\n");
+        str.append("End: " +   Integer.toString(this.endTime) + "\n"); 
+        return str.toString(); 
     }
 }
