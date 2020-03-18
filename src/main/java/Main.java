@@ -24,8 +24,6 @@ import com.google.gson.JsonSyntaxException;
  * the code is the primary source of truth. 
  * Meaning that it's possible for the documentation to be out of date 
  * But the code will always be current. 
- *
- *
  */
 public class Main {
 
@@ -58,6 +56,8 @@ public class Main {
 
         return res; 
     }
+
+
 
     public static void initRouter(){
 
@@ -96,14 +96,13 @@ public class Main {
         port(80);
 		staticFiles.location("/public/build"); 
         initRouter(); 
-        //DBUtil.connectToDB(); 
-
-        //Menu test = new Menu( 1, 1); 
+        DBUtil.connectToDB(); 
     }
 
 	public static void main(String[] args) {
         startServer(); 
-
+        Menu test = new Menu(7, 5); 
+        System.out.printf("test data: %s\n", test.toString() ); 
 	}
 }
 
