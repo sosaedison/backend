@@ -94,7 +94,9 @@ public class Main {
     public static void startServer() {
 
         port(80);
-		staticFiles.location("/public/build"); 
+        // port(443); // HTTPS port
+		staticFiles.location("/public/build");
+        //secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
         initRouter(); 
         //DBUtil.connectToDB(); 
 
