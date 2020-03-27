@@ -1,180 +1,160 @@
 {
-    "menuID": 3,
-	"status": "Active",
+	"menuStatus": "ACTIVE",
+    "restaurantID": 211, 
 	"menuName": "Dinner",
-	"menuTye": "Dinner",
-	"timeRange": {
-		"start": 1630,
-		"end": 2200
-	},
-    "numItems": 21,
-    "items": [
+	"timeRanges": [
+        {
+            "start": 1630,
+            "end": 2200
+	    }
+    ],
+    "menuItems": [
         {
             "category": "Appetizers",
             "name": "Tripple Dipper",
             "description": "Why choose one when you can choose three? Select three appetizers and enjoy! Served with dipping sauces.",
             "image": "",
-            "allergens": ["Gluten","Meat","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT","DAIRY"],
             "price": 13.99
         },{
             "category": "Appetizers",
             "name": "Southwestern Eggrolls",
             "description": "These aren’t your ordinary eggrolls. Crispy flour tortillas, chicken, black beans, corn, jalapeño Jack cheese, red peppers, spinach. Served with avocado-ranch.",
             "image": "",
-            "allergens": ["Gluten","Vegetarian","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","DAIRY"],
             "price": 11.29
         },{
             "category": "Appetizers",
             "name": "Skillet Queso",
             "description": "Your chip’s favorite dip for over 25 years. Original with beef. Served with chips & salsa.",
             "image": "",
-            "allergens": ["Gluten","Vegetarian","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","DAIRY"],
             "price": 7.49
         },{
             "category": "Appetizers",
             "name": "Fried Pickles",
             "description": "Served with house-made ranch.",
             "image": "",
-            "allergens": ["Gluten","Vegetarian"],
-            "spice": "",
-            "price": 7.99
+            "allergens": ["GLUTEN"],
+            "price": 8.99
         },{
             "category": "Burgers",
             "name": "Queso Burger",
             "description": "This half-pound patty comes smothered in white queso, crunchy tortilla strips & pico.",
             "image": "",
-            "allergens": ["Gluten","Meat","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT","DAIRY"],
             "price": 10.79
         },{
             "category": "Burgers",
             "name": "Mushroom Swiss Burger",
             "description": "There’s so mush-room in our hearts for this one. Topped with sauteed onions, mushrooms, Swiss, lettuce, tomato & garlic aioli.",
             "image": "",
-            "allergens": ["Gluten","Meat","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT","DAIRY"],
             "price": 10.99
         },{
             "category": "Burgers",
             "name": "Southern Smokehouse Burger",
             "description": "Bacon, cheddar, pickles, Awesome Blossom Petals, lettuce, tomato, garlic aioli. Served with a side of original BBQ sauce.",
             "image": "",
-            "allergens": ["Gluten","Meat","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT","DAIRY"],
             "price": 11.49
         },{
             "category": "Fajitas",
             "name": "Carnitas Fajitas",
             "description": "Pulled pork carnitas, grilled bell peppers & onions. Topped with a drizzle of mango-habanero sauce and green onions.",
             "image": "",
-            "allergens": ["Gluten","Meat","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT","DAIRY"],
             "price": 15.29
         },{
             "category": "Fajitas",
             "name": "Mushroom Jack Chicken Fajitas",
             "description": "Grilled chicken, sauteed mushrooms, crumbled bacon & mixed cheese.",
             "image": "",
-            "allergens": ["Gluten","Meat","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT","DAIRY"],
             "price": 16.29
         },{
             "category": "Fajitas",
             "name": "Black Bean & Veggie Fajitas",
             "description": "Black bean patty, roasted asparagus, sauteed mushrooms, corn & black bean salsa, queso fresco, avocado & a drizzle of spicy Santa Fe sauce.",
             "image": "",
-            "allergens": ["Gluten","Vegetarian","Dairy"],
-            "spice": "",
+            "allergens": ["GLUTEN","DAIRY"],
             "price": 14.99
         },{
             "category": "Chicken & Seafood",
             "name": "Cajun Chicken Pasta",
             "description": "Grilled chicken, penne in Alfredo sauce, topped with chile spices, Parmesan, tomatoes, green onions. Served with garlic toast.",
             "image": "",
-            "allergens": ["Gluten","Meat"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT"],
             "price": 12.99
         },{
             "category": "Chicken & Seafood",
             "name": "Cajun Shrimp Pasta",
             "description": "Shrimp, penne in Alfredo sauce, topped with chile spices, Parmesan, tomatoes, green onions. Served with garlic toast.",
             "image": "",
-            "allergens": ["Gluten","Meat"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT"],
             "price": 13.99
         },{
             "category": "Chicken & Seafood",
             "name": "Chipotle Chicken Fresh Mex Bowl",
             "description": "Grilled chicken, pico, field greens, Mexican rice, corn & black bean salsa, avocado, shredded cheese, tortilla strips, cilantro, chipotle pesto, house-made ranch.",
             "image": "",
-            "allergens": ["Gluten","Meat"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT"],
             "price": 11.99
         },{
             "category": "Chicken & Seafood",
             "name": "Chipotle Shrimp Fresh Mex Bowl",
             "description": "Shrimp, pico, field greens, Mexican rice, corn & black bean salsa, avocado, shredded cheese, tortilla strips, cilantro, chipotle pesto, house-made ranch.",
             "image": "",
-            "allergens": ["Gluten","Meat"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT"],
             "price": 12.99
         },{
             "category": "Chicken & Seafood",
             "name": "Spicy Shrimp Tacos",
             "description": "Three spicy chile-lime shrimp tacos in flour tortillas with pico, avocado, cilantro, coleslaw queso fresco. Served with Mexican rice & black beans.",
             "image": "",
-            "allergens": ["Gluten","Meat"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT"],
             "price": 12.29
         },{
             "category": "Chicken & Seafood",
             "name": "Ancho Salmon",
             "description": "Seared chile-rubbed Atlantic salmon, spicy citrus-chile sauce, cilantro, queso fresco. Served with Mexican rice & steamed broccoli.",
             "image": "",
-            "allergens": ["Gluten","Meat"],
-            "spice": "",
+            "allergens": ["GLUTEN","MEAT"],
             "price": 15.99
         },{
             "category": "Chicken Crispers",
             "name": "Crispy Chicken Crispers",
             "description": "Served with fries, corn on the cob and choice of honey-mustard, BBQ sauce or house-made ranch.",
             "image": "",
-            "allergens": ["Meat"],
-            "spice": "",
+            "allergens": ["MEAT"],
             "price": 11.59
         },{
             "category": "Chicken Crispers",
             "name": "Crispy Honey-Chipotle Chicken Crispers",
             "description": "Served with fries, corn on the cob and ranch.",
             "image": "",
-            "allergens": ["Meat"],
-            "spice": "",
+            "allergens": ["MEAT"],
             "price": 11.59
         },{
             "category": "Chicken Crispers",
             "name": "Honey-Chipotle Crispers® & Waffles",
             "description": "Crispers on top of Belgian waffles. Topped with bacon, jalapeños, ancho-chile ranch. Served with fries & honey-chipotle sauce.",
             "image": "",
-            "allergens": ["Gluten","Dairy","Meat"],
-            "spice": "",
+            "allergens": ["GLUTEN","DAIRY","MEAT"],
             "price": 12.59
         },{
             "category": "Chicken Crispers",
             "name": "Crispy Buffalo Bleu Crispers",
             "description": "Served with fries, corn on the cob and bleu cheese.",
             "image": "",
-            "allergens": ["Meat","Dairy"],
-            "spice": "",
+            "allergens": ["MEAT","DAIRY"],
             "price": 11.89
         },{
             "category": "Chicken Crispers",
             "name": "Crispy Mango-Habanero Crispers",
             "description": "Served with fries, corn on the cob and ranch.",
             "image": "",
-            "allergens": ["Meat"],
+            "allergens": ["MEAT"],
             "spice": "",
             "price": 11.89
         }

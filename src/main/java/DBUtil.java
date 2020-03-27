@@ -103,8 +103,8 @@ public class DBUtil {
             stmt.setInt( "mStatus", menu.getStatus() ); 
             stmt.setInt("restaurantID", menu.getRestaurantID() ); 
             stmt.setNString("menuName", menu.getName() ); 
-            stmt.setNString("startTime", menu.getStartTimes() ); 
-            stmt.setNString("endTime", menu.getEndTimes() );  
+            stmt.setNString("startTimes", menu.getStartTimes() ); 
+            stmt.setNString("endTimes", menu.getEndTimes() );  
         }
         catch(SQLException e){ 
             System.out.printf("SQL Exception while executing CreateNewMenu.\n" + 

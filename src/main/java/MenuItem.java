@@ -107,6 +107,9 @@ public class MenuItem {
     }
 
     public void saveImage( int menuID ){
+        if( this.imageBytes == null ){
+            return; 
+        }
         byte[] bytes = ImageUtil.deserialize( this.imageBytes );
         this.image = ImageUtil.saveImage( menuID, this.itemID, bytes);   
     }
