@@ -131,7 +131,6 @@ public class MenuItem {
                 System.out.printf("Empty Allergen for menuItem: %s\n", this.name ); 
                 continue; 
             }
-            System.out.printf("Allergen: %s\n", this.allergens[i].name() );
             str.append( "\t\t" + this.allergens[i].name() + "\n"  ); 
         }
         return str.toString();
