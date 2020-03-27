@@ -61,7 +61,7 @@ public class Main {
 
     public static void initRouter(){
 
-		get("/", Main::serveStatic);
+//		get("/", Main::serveStatic);
 
         path("/api", () -> {
             path("/users", () -> {
@@ -93,9 +93,9 @@ public class Main {
 
     public static void startServer() {
 
-        port(80);
+        //port(80);
         // port(443); // HTTPS port
-		staticFiles.location("/public/build");
+		staticFiles.location("/public");
         //secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
         initRouter(); 
         //DBUtil.connectToDB(); 
