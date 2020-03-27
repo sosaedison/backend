@@ -1,0 +1,9 @@
+AutoGarcon/Menu$MenuStatus.class
+AutoGarcon/Menu$MenuType.class
+AutoGarcon/Main.class
+AutoGarcon/MenuItem$Allergen.class
+AutoGarcon/MenuItem.class
+AutoGarcon/TimeRange.class
+AutoGarcon/Menu.class
+AutoGarcon/DBUtil.class
+AutoGarcon/JsonTransformer.class
