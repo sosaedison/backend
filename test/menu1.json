@@ -1,8 +1,7 @@
 {
-    "menuID": 21, 
     "menuStatus": "INACTIVE", 
-    "menuType": "DRINKS",
     "restaurantID": 211,
+    "menuName": "good menu",
     "timeRanges": [
         {
             "startTime": 1100,
@@ -11,13 +10,13 @@
     ], 
     "menuItems": [ 
         {
-            "allergens": [ "DIARY" ,  "MEAT"  ], 
+            "allergens": [ "DAIRY" ,"MEAT"  ], 
             "category": "custom", 
             "description": "description",
-            "imageBytes": "ffff", 
+            "imageBytes": "", 
             "name": "Burger",
             "price": 1.27
         }
-    ],
-        "name": "good menu"
+    ]
+
 }

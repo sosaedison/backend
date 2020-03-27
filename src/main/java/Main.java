@@ -45,16 +45,17 @@ public class Main {
     public static Object addMenu( Request req, Response res) {
   
         Menu menu = Menu.menuFromJson( req.body() );   
-        System.out.println(menu.toString());
-        //menu.save(); 
 
-        if (menu.isEmpty()) {
+        System.out.printf("Printing Incoming menu:\n %s\n", menu.toString());
+        menu.save(); 
+
+        if (!menu.isDefault()) {
             res.status(200);
+            return "Successfully recieved menu.";
         } else {
             res.status(500); 
+            return "Error parsing menu"; 
         }
-
-        return res; 
     }
 
 
@@ -104,8 +105,6 @@ public class Main {
 	public static void main(String[] args) {
 
         startServer(); 
-        Menu test = new Menu(7, 5); 
-        System.out.printf("test data: %s\n", test.toString() ); 
 	}
 }
 

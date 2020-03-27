@@ -1,21 +1,20 @@
 {
-  "menuID": 4,
-  "status": "Active",
+  "menuStatus": "Active",
   "menuName": "Breakfast",
-  "menuTye": "Breakfast",
-  "timeRange": {
-    "start": 700,
-    "end": 1100
-  },
-  "numItems": 29,
-  "items":[
+  "restaurantID": 211, 
+  "timeRanges": [
+      {
+        "startTime": 700,
+        "endTime": 1100
+      }
+  ],
+  "menuItems":[
     {
       "category": "Omelettes",
       "name": "Granny's Country",
       "description": "Filled with diced grilled ham, onions, green peppers, American cheese, cheese sauce and crispy hash browns. Topped with all of the same!",
       "image": "",
       "allergens": "",
-      "spice": "none",
       "price": 11.29
     },{
       "category": "Omelettes",
@@ -23,7 +22,6 @@
       "description": "Diced grilled ham, crimini mushrooms, tomatoes, onions, green peppers and American cheese – this classic omelet has it all!",
       "image": "",
       "allergens": "",
-      "spice": "none",
       "price": 12.99
     },{
       "category": "Omelettes",
@@ -31,7 +29,6 @@
       "description": "Pork sausage, Applewood smoked bacon, smoked ham, grilled red onions and Cheddar atop an omelet stuffed with more of the same, plus crispy tots.",
       "image": "",
       "allergens": "",
-      "spice": "none",
       "price": 11.29
     },{
       "category": "Omelettes",
@@ -39,7 +36,6 @@
       "description": "A traditional favorite of diced grilled ham and American cheese. Served with three buttermilk pancakes. No sides",
       "image": "",
       "allergens": "",
-      "spice": "none",
       "price": 10.99
     },{
       "category": "Omelettes",
@@ -47,7 +43,6 @@
       "description": "An egg white omelet filled with turkey sausage, crimini mushrooms, green bell peppers, onions, diced tomatoes, and Swiss cheese. Served with fresh fruit and dry whole wheat toast. No sides.",
       "image": "",
       "allergens": "",
-      "spice": "none",
       "price": 10.49
     },{
       "category": "Breakfast",
@@ -55,7 +50,6 @@
       "description": "Three slices of Vienna bread dipped in our signature batter, grilled and sprinkled with powdered sugar.",
       "image": "",
       "allergens": "",
-      "spice": "",
       "price": 9.49
     },{
       "category": "Breakfast",

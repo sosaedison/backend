@@ -18,7 +18,7 @@ public class MenuItem {
 
     public enum Allergen { 
         MEAT, 
-        DIARY, 
+        DAIRY, 
         GLUTEN, 
         NUTS, 
         SOY, 
@@ -72,7 +72,7 @@ public class MenuItem {
                 allergens.add( Allergen.MEAT ); 
             }
             if( rs.getBoolean("dairy") ){
-                allergens.add( Allergen.DIARY ); 
+                allergens.add( Allergen.DAIRY); 
             }
             if( rs.getBoolean("nuts") ){
                 allergens.add( Allergen.NUTS ); 
@@ -113,16 +113,24 @@ public class MenuItem {
 
     @Override 
     public String toString() {
-        StringBuilder str = new StringBuilder(); 
-        str.append("allergens: \n" );
-        for( int i = 0; i < this.allergens.length; i++ ){
-            str.append( allergens[i].toString() ); 
+        if( this.name == null ){
+            return "Empty MenuItem.\n";
         }
+        StringBuilder str = new StringBuilder(); 
         str.append("\t" + this.category + "\n"); 
         str.append("\t" + this.description + "\n"); 
         //str.append(imageBytes)
         str.append("\t" + this.name + "\n"); 
         str.append("\t" + String.valueOf(this.price) + "\n");
+        str.append("\tallergens: \n" );
+        for( int i = 0; i < this.allergens.length; i++ ){
+            if( this.allergens[i] == null ){
+                System.out.printf("Empty Allergen for menuItem: %s\n", this.name ); 
+                continue; 
+            }
+            System.out.printf("Allergen: %s\n", this.allergens[i].name() );
+            str.append( "\t\t" + this.allergens[i].name() + "\n"  ); 
+        }
         return str.toString();
     }
 }

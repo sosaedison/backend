@@ -21,9 +21,9 @@ public class Menu {
     private int menuID; 
     private MenuStatus status; 
     private int restaurantID; 
-    private TimeRange[] timeRanges; //current db only holds one time range. 
+    private TimeRange[] timeRanges; 
     private MenuItem[] menuItems;  
-    private String name; 
+    private String menuName; 
 
     /**
      * Menu: Constructor to create an empty Menu Class.
@@ -33,7 +33,7 @@ public class Menu {
     public Menu(){
         this.menuID = -1; 
         this.restaurantID = -1; 
-        this.name = "Default Menu"; 
+        this.menuName = "Default Menu"; 
         this.status = MenuStatus.INACTIVE;
         this.timeRanges = new TimeRange[0]; 
         this.menuItems = new MenuItem[0];
@@ -54,7 +54,7 @@ public class Menu {
             try {
                 this.restaurantID = restaurantID; 
                 this.menuID = menu.getInt( "menuID" );  
-                this.name = menu.getString("menuName"); 
+                this.menuName = menu.getString("menuName"); 
                 int statusInt = menu.getInt("menuStatus");
                 this.status = MenuStatus.values()[statusInt];
 
@@ -127,7 +127,7 @@ public class Menu {
     }
 
     public String getName(){
-        return this.name; 
+        return this.menuName; 
     }
 
     public MenuItem[] getMenuItems(){
@@ -156,8 +156,8 @@ public class Menu {
      * The instance will not initalized with data when using the constructor with no arguments.  
      * The Database starts menuIDs at 1. 
      */
-    public boolean isEmpty() {
-        if( this.menuID == -1){
+    public boolean isDefault() {
+        if( this.menuName.equals( "Default Menu")){
             return true; 
         } else {
             return false; 
@@ -184,10 +184,12 @@ public class Menu {
             return  "Empty Menu Object\n";
         }
         StringBuilder str = new StringBuilder();
-        str.append("menuID: " + Integer.toString(this.menuID) + "\n");   
+        if( this.menuID != -1 ){ 
+            str.append("menuID: " + Integer.toString(this.menuID) + "\n");   
+        }
         str.append("restaurantID: " + Integer.toString( this.restaurantID ) + "\n" );
         str.append("status: " + this.status.name() + "\n" ); 
-        str.append("MenuName: " + this.name + "\n");
+        str.append("MenuName: " + this.menuName + "\n");
         str.append("Time Ranges:\n");
         for( int i = 0; i < this.timeRanges.length; i++ ){
             str.append(this.timeRanges[i].toString() + "\n");
