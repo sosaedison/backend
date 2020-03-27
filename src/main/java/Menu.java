@@ -46,16 +46,16 @@ public class Menu {
      * @return New Menu Object with 
      *  feilds generated from querying the database. 
      */
-    public Menu( int restaurantID, int menuID ){
+    public Menu( int menuID, int restaurantID ){
 
-        ResultSet menu = DBUtil.getMenu( restaurantID, menuID ); 
+        ResultSet menu = DBUtil.getMenu( menuID, restaurantID ); 
 
         if( menu != null ){
             try {
                 this.restaurantID = restaurantID; 
-                this.menuID = menu.getInt( "mId" );  
-                this.name = menu.getString("mName"); 
-                int statusInt = menu.getInt("mStatus");
+                this.menuID = menu.getInt( "menuID" );  
+                this.name = menu.getString("menuName"); 
+                int statusInt = menu.getInt("menuStatus");
                 this.status = MenuStatus.values()[statusInt];
 
                 try {
@@ -85,7 +85,6 @@ public class Menu {
      * @exception JsonSyntaxException Throws a syntax exception when Gson can
      *  not deserialize into a Menu Object. 
      * @return A new Menu Instance from the json Request body. 
-     *
      */
     public static Menu menuFromJson( String body ) {
 
@@ -100,7 +99,6 @@ public class Menu {
             System.out.printf("Failed to deserialize the request data into a Menu Object.\n" + 
                     "Request body: %s.\n Exception: %s\n", body, e.toString() );
         }
-
         return menu; 
     }
 
@@ -134,6 +132,18 @@ public class Menu {
 
     public MenuItem[] getMenuItems(){
         return this.menuItems; 
+    }
+
+    public int getStatus(){
+        return this.status.ordinal();
+    }
+
+    public String getStartTimes(){
+        return TimeRange.getStartTimeString( this.timeRanges ); 
+    }
+
+    public String getEndTimes(){
+        return TimeRange.getEndTimeString( this.timeRanges ); 
     }
 
 
@@ -175,12 +185,12 @@ public class Menu {
         }
         StringBuilder str = new StringBuilder();
         str.append("menuID: " + Integer.toString(this.menuID) + "\n");   
-        str.append("restaurantID: %d " + Integer.toString( this.restaurantID ) + "\n" );
+        str.append("restaurantID: " + Integer.toString( this.restaurantID ) + "\n" );
         str.append("status: " + this.status.name() + "\n" ); 
         str.append("MenuName: " + this.name + "\n");
-        str.append("Time Ranges: ");
+        str.append("Time Ranges:\n");
         for( int i = 0; i < this.timeRanges.length; i++ ){
-            str.append(this.timeRanges[i].toString());
+            str.append(this.timeRanges[i].toString() + "\n");
         }
         str.append("menuItems:\n");
         for( int i = 0; i < this.menuItems.length; i++ ){

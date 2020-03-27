@@ -16,24 +16,11 @@ import java.io.File;
  * connection string = protocol//user:password@[hosts][/database][?properties]
  * Note that the connection obj is not thread safe. So for now we will create 
  * a new one everytime. 
- *
- * TODO: ?implement Binary Search on a result set for finding a specified menuID. 
- *
  */
 public class DBUtil {
 
     public final static String HOST_URL = "auto-garcon-database.cd4hzqa9i8mi.us-east-1.rds.amazonaws.com";
     private Connection connection; 
-
-
-    /** 
-     * uploadImage: Uploads the image to google's api. 
-     *
-     *
-     */
-    public static void uploadImage( File file ){
-
-    }
 
 
     /**
@@ -52,20 +39,14 @@ public class DBUtil {
         try { 
             stmt = c.prepareCall("{call GetMenusByRestaurantId(?)}" ); 
             stmt.setInt( "id", restaurantID );  
-
-            boolean hasResult = stmt.execute(); 
-
-            if(hasResult){
-                result = stmt.getResultSet(); 
-                result.beforeFirst(); 
-            }
-
+            
+            result = stmt.executeQuery(); 
+            result.beforeFirst(); 
         } catch( SQLException e ){
             System.out.printf("Failed to exectue GetMenusByRestaurantId stored procedure.\n" + 
                     "Exception: " + e.toString() );
             System.exit(1); 
         }
-
         return result; 
     }
 
@@ -76,7 +57,7 @@ public class DBUtil {
      * @param menuID 
      * @return SQL result representing the restaurantID, and menuID.  
      */
-    public static ResultSet getMenu(int restaurantID, int menuID ){
+    public static ResultSet getMenu( int menuID, int restaurantID ){
 
         ResultSet menus; 
         boolean hasResult = false ;
@@ -88,45 +69,68 @@ public class DBUtil {
         }
 
         int resultID; 
-        do{ 
-            try {
-                hasResult = menus.next(); 
-                resultID = menus.getInt( "menuID" ); 
+        try{
+            hasResult = menus.next(); 
+        } catch (SQLException e){
+            System.out.printf("Failed to get next row in result set.\n Exception: %s\n", e.toString() );
+            return null;
+        }
 
+        while( hasResult ){
+            try {
+                resultID = menus.getInt( "menuID" ); 
                 if( resultID == menuID ){
                     return menus;  
                 } else {
                     hasResult = menus.next(); 
                 }
-
             } catch (SQLException e ){
                 System.out.printf("SQL Excpetion when trying to get next row in result set.\n" + 
-                        "Exception: " + e.toString() );
+                        "Exception: %s\n", e.toString() );
                 System.exit(1); 
             }
-        } while( hasResult );
+        }
         return menus;
     }
 
     public static void saveMenu( Menu menu ){
-        System.out.println("saveMenu is not implemented yet"); 
+
+        Connection c = connectToDB(); 
+        CallableStatement stmt; 
+        
+        try {
+            stmt = c.prepareCall("{call CreateNewMenu(?, ?, ?, ?, ?)}");
+            stmt.setInt( "mStatus", menu.getStatus() ); 
+            stmt.setInt("restaurantID", menu.getRestaurantID() ); 
+            stmt.setNString("menuName", menu.getName() ); 
+            stmt.setNString("startTime", menu.getStartTimes() ); 
+            stmt.setNString("endTime", menu.getEndTimes() );  
+        }
+        catch(SQLException e){ 
+            System.out.printf("SQL Exception while executing CreateNewMenu.\n" + 
+                    "Exception: %s\n", e.toString() );
+        }
+
     }
 
     public static ResultSet getMenuItems( int menuID ) {
 
-        System.out.println("getMenuItems is not implemented yet");
         ResultSet result = null; 
         Connection c = connectToDB(); 
         CallableStatement stmt;
 
         try { 
-            stmt = c.prepareCall("{call GetMenuItemsByMenuId(?)}" ); 
+            stmt = c.prepareCall("{call GetMenuItemByMenuId(?)}" ); 
             stmt.setInt( "id", menuID);  
+
+            result = stmt.executeQuery(); 
+            result.beforeFirst(); 
+
         } catch (SQLException e){
-            System.out.printf("SQL Exception while preparing getMenu stored Proceedure\n"); 
+            System.out.printf("SQL Exception while executing GetMenuItemsByMenuId\n" + 
+                    "Exception: %s\n", e.toString()); 
         }
         return result;
-
     }
 
     public static Connection connectToDB(){
@@ -189,12 +193,4 @@ public class DBUtil {
             return true; 
         }
     }
-
-
-
 }
-
-
-
-
-

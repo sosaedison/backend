@@ -45,8 +45,8 @@ public class Main {
     public static Object addMenu( Request req, Response res) {
   
         Menu menu = Menu.menuFromJson( req.body() );   
-        menu.save(); 
         System.out.println(menu.toString());
+        //menu.save(); 
 
         if (menu.isEmpty()) {
             res.status(200);
@@ -100,6 +100,7 @@ public class Main {
     }
 
 	public static void main(String[] args) {
+
         startServer(); 
         Menu test = new Menu(7, 5); 
         System.out.printf("test data: %s\n", test.toString() ); 

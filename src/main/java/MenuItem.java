@@ -47,6 +47,9 @@ public class MenuItem {
         return item; 
     }
 
+    /**
+     * Consruct an empty menu item.
+     */
     public MenuItem(){
         this.itemID = -1; 
         this.allergens = new Allergen[0]; 
@@ -58,9 +61,9 @@ public class MenuItem {
 
         try{ 
             this.itemID = rs.getInt( "itemID" );  
+            this.name = rs.getString("itemName"); 
             this.category = rs.getString("category"); 
             this.description = rs.getString("description"); 
-            this.name = rs.getString("itemName"); 
             
             if( rs.getBoolean("gluten") ){
                 allergens.add( Allergen.GLUTEN );
@@ -68,7 +71,7 @@ public class MenuItem {
             if( rs.getBoolean("meat") ){
                 allergens.add( Allergen.MEAT ); 
             }
-            if( rs.getBoolean("diary") ){
+            if( rs.getBoolean("dairy") ){
                 allergens.add( Allergen.DIARY ); 
             }
             if( rs.getBoolean("nuts") ){
@@ -77,7 +80,7 @@ public class MenuItem {
             if( rs.getBoolean("soy") ) {
                 allergens.add( Allergen.SOY ); 
             }
-            this.allergens = (Allergen[])allergens.toArray();
+            this.allergens = allergens.toArray( new Allergen[ allergens.size() ]);
         } catch( SQLException e) {
             System.out.printf("Failed to get the required fields while creating a menuItem object.\n" + 
                     "Exception: %s\n", e.toString() );
@@ -100,7 +103,7 @@ public class MenuItem {
             return null; 
         }
 
-        return (MenuItem[]) result.toArray();
+        return result.toArray( new MenuItem[  result.size() ] );
     }
 
     public void saveImage( int menuID ){
@@ -115,11 +118,11 @@ public class MenuItem {
         for( int i = 0; i < this.allergens.length; i++ ){
             str.append( allergens[i].toString() ); 
         }
-        str.append(this.category + "\n"); 
-        str.append(this.description + "\n"); 
+        str.append("\t" + this.category + "\n"); 
+        str.append("\t" + this.description + "\n"); 
         //str.append(imageBytes)
-        str.append(this.name + "\n"); 
-        str.append(String.valueOf(this.price ));
+        str.append("\t" + this.name + "\n"); 
+        str.append("\t" + String.valueOf(this.price) + "\n");
         return str.toString();
     }
 }
