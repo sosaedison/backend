@@ -1,4 +1,7 @@
 package AutoGarcon; 
+import java.util.ArrayList; 
+import java.sql.ResultSet; 
+import java.sql.SQLException; 
 
 
 /*
@@ -24,7 +27,42 @@ public class TimeRange {
         this.startTime = start; 
         this.endTime = stop; 
     }
-    
+
+    public TimeRange( ResultSet rs ){
+        try{ 
+            this.startTime = rs.getInt("startTime"); 
+            this.endTime = rs.getInt("endTime"); 
+        }
+        catch( SQLException e){
+            System.out.printf("Failed to get the required fields while creating a TimeRange Object.\n" + 
+                   "Exception: %s.\n", e.toString() );
+        }
+
+    }
+
+
+    public static TimeRange[] timeRanges( int menuID ){
+        ResultSet times = DBUtil.getMenuTimes( menuID ); 
+        ArrayList<TimeRange> list = new ArrayList<TimeRange>(); 
+        boolean hasResult; 
+
+        try{ 
+            hasResult = times.next();
+
+            while(hasResult){
+                TimeRange tr = new TimeRange( times );  
+                list.add( tr ); 
+                hasResult = times.next(); 
+            }
+        }
+        catch( SQLException e){
+            System.out.printf("Failed to get next row in result set.\n" + 
+                    "Exception: %s\n", e.toString() );
+        }
+        return list.toArray( new TimeRange[ list.size() ] ); 
+    }
+
+
     /**
      * defaultRange: 
      * Construct a time range object with a default start/stop time 
@@ -46,11 +84,21 @@ public class TimeRange {
         }
         return result; 
     }
+
+    public int getStartTime() {
+        return this.startTime; 
+    }
     
+    public int getEndTime(){
+        return this.endTime;  
+    }
 
     /**
      * getStartTimesString: Get a bar delimted string of the start times. 
+     * @param timeRanges - an array of time range objects to get a start time from.
+     * @return a bar delimted string of start times. 
      */
+    @Deprecated
     public static String getStartTimeString( TimeRange[] timeRanges ){
         StringBuilder str = new StringBuilder(); 
         for( TimeRange r :  timeRanges ){
@@ -61,7 +109,10 @@ public class TimeRange {
 
     /**
      * getStartTimesString: Get a bar delimted string of the start times. 
+     * @param timeRanges - an array of time range objects to get an end time from.
+     * @return a bar delimted string of end times. 
      */
+    @Deprecated
     public static String getEndTimeString( TimeRange[] timeRanges ){
         StringBuilder str = new StringBuilder(); 
         for( TimeRange r :  timeRanges ){

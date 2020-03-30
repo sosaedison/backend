@@ -1,4 +1,5 @@
 package AutoGarcon; 
+import java.util.ArrayList; 
 import java.lang.reflect.Type; 
 import java.sql.ResultSet; 
 import java.sql.SQLException;
@@ -39,6 +40,8 @@ public class Menu {
         this.menuItems = new MenuItem[0];
     }
 
+
+
     /**
      * Menu:   Constructor for Menu class. 
      * @param restaurantID id of the restaurant that owns wanted menu. 
@@ -76,6 +79,53 @@ public class Menu {
                        "Exception: %s.\n", e.toString() );
             }
         }
+    }
+
+    public Menu( ResultSet qresult ){
+
+        try {
+            this.restaurantID = qresult.getInt("restaurantID"); 
+            this.menuID = qresult.getInt("menuID"); 
+            int statusInt = qresult.getInt("menuStatus"); 
+            this.status = MenuStatus.values()[statusInt];  
+            this.menuName = qresult.getString("menuName"); 
+            this.menuItems = MenuItem.menuItems( this.menuID ); 
+            this.timeRanges = TimeRange.timeRanges( this.menuID ); 
+        }
+        catch( SQLException e){
+            System.out.printf("Failed to get the required fields while creating a menu Object.\n" + 
+                   "Exception: %s.\n", e.toString() );
+        }
+
+    }
+
+    /**
+     * allMenus: Get all of the menus in an array 
+     * for the specified restaurant. 
+     * @param restaurantID the restaurant to get menus for. 
+     * @return An array of menus. 
+     *
+     */
+    public static Menu[] allMenus( int restaurantID ){
+
+        ResultSet menus = DBUtil.getMenus( restaurantID ); 
+        ArrayList<Menu> list = new ArrayList<Menu>();  
+        boolean hasResult = false; 
+
+        try{ 
+            hasResult = menus.next(); 
+            while( hasResult ){
+                    Menu menu = new Menu( menus ); 
+                    list.add(menu); 
+                    hasResult = menus.next(); 
+            }
+        }
+        catch( SQLException e ){
+            System.out.printf("Failed to get next row in result set.\n" + 
+                    "Exception: %s\n", e.toString() );
+        }
+
+        return list.toArray( new Menu[ list.size() ] ); 
     }
 
     /**
@@ -118,11 +168,15 @@ public class Menu {
         return this.menuID; 
     }
 
+    public void setMenuID(int menuID){
+        this.menuID = menuID; 
+    }
+
     public int getRestaurantID(){
         return this.restaurantID; 
     }
 
-    public TimeRange[] getTimeRange(){
+    public TimeRange[] getTimeRanges(){
         return this.timeRanges;
     }
 
@@ -148,7 +202,7 @@ public class Menu {
 
 
     /**
-     * isEmpty: Checks if this instance of Menu was initalized
+     * isDefault: Checks if this instance of Menu was initalized
      * without any data. 
      * @return true if the instance has no initalized data
      *  false if otherwise. 
@@ -157,7 +211,7 @@ public class Menu {
      * The Database starts menuIDs at 1. 
      */
     public boolean isDefault() {
-        if( this.menuName.equals( "Default Menu")){
+        if( this.menuName.equals("Default Menu")){
             return true; 
         } else {
             return false; 

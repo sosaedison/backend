@@ -59,6 +59,20 @@ public class Main {
     }
 
 
+    public static Object getMenu( Request req, Response res ){
+        try{ 
+            int restaurantID = Integer.parseInt(req.params(":restaurantid")); 
+            res.status(200); 
+            return Menu.allMenus( restaurantID ); 
+        } catch( NumberFormatException nfe){
+            res.status(400); 
+            return "Failed to parse restaurantID as an integer.\n"; 
+        }
+
+
+    }
+
+
 
     public static void initRouter(){
 
@@ -82,7 +96,7 @@ public class Main {
                     post("/orders/submit", Main::endpointNotImplemented); 
                     post("orders/complete", Main::endpointNotImplemented); 
                     path("/menu", () -> {
-                        get("", Main::endpointNotImplemented ); 
+                        get("", Main::getMenu, new JsonTransformer() ); 
                         post("/add", "application/json", Main::addMenu); 
                         post("/remove", Main::endpointNotImplemented); 
                     });

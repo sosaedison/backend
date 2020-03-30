@@ -4,6 +4,7 @@ import java.io.File;
 
 
 
+
 /**
  * DBUtil: Utility functions for interacting with the datbase. 
  * @author Tyler Beverley
@@ -93,26 +94,70 @@ public class DBUtil {
         return menus;
     }
 
+    /**
+     * saveMenu: Saves the passed menu object to the database. 
+     * Inserting into the database will give us a menuID to use, so 
+     * this function will get that ID, and save it. 
+     * It will save all fields, including any number of time ranges that are
+     * included in the menu object. 
+     * @param menu Menu object to be saved to the database. 
+     */
     public static void saveMenu( Menu menu ){
 
         Connection c = connectToDB(); 
         CallableStatement stmt; 
+        ResultSet result; 
+        int menuID; 
         
         try {
             stmt = c.prepareCall("{call CreateNewMenu(?, ?, ?, ?, ?)}");
             stmt.setInt( "mStatus", menu.getStatus() ); 
             stmt.setInt("restaurantID", menu.getRestaurantID() ); 
             stmt.setNString("menuName", menu.getName() ); 
-            stmt.setNString("startTimes", menu.getStartTimes() ); 
-            stmt.setNString("endTimes", menu.getEndTimes() );  
+            stmt.setInt("startTime", menu.getTimeRanges()[0].getStartTime()); 
+            stmt.setInt("endTime", menu.getTimeRanges()[0].getEndTime() );  
+            stmt.registerOutParameter("menuID", Types.INTEGER); 
+
+            result = stmt.executeQuery(); 
+            result.beforeFirst(); 
+            
+            //get output param 
+            menuID = stmt.getInt("menuID"); 
+            menu.setMenuID( menuID ); 
         }
         catch(SQLException e){ 
             System.out.printf("SQL Exception while executing CreateNewMenu.\n" + 
                     "Exception: %s\n", e.toString() );
         }
-
     }
 
+    /**
+     * getMenuTimes: gets the menuTimes for the specified menuID. 
+     *
+     */
+    public static ResultSet getMenuTimes( int menuID ){
+        Connection c = connectToDB(); 
+        CallableStatement stmt; 
+        ResultSet result = null;
+
+        try{ 
+            stmt = c.prepareCall("{call GetMenuTimes(?)}"); 
+            stmt.setInt("mID", menuID ); 
+            result = stmt.executeQuery(); 
+            result.beforeFirst();  
+
+        } catch (SQLException e){
+            System.out.printf("SQL Exception while executing GetMenuTimes.\n" + 
+                    "Exception: %s\n", e.toString() );
+        }
+        return result; 
+    }
+
+    /**
+     * getMenuItems: gets the menu Items associated with a menuID. 
+     * @param menuID
+     * @return result set containing tuples of menu items.
+     */
     public static ResultSet getMenuItems( int menuID ) {
 
         ResultSet result = null; 
