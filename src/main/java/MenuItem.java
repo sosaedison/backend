@@ -12,10 +12,12 @@ import java.sql.SQLException;
  *
  * Represetns information pertaining to items
  * that are conatined within a menu.
- *
  */
 public class MenuItem { 
 
+    /**
+     * Allergen - What allergens that the menuItem may contain.
+     */
     public enum Allergen { 
         MEAT, 
         DAIRY, 
@@ -112,6 +114,22 @@ public class MenuItem {
         }
         byte[] bytes = ImageUtil.deserialize( this.imageBytes );
         this.image = ImageUtil.saveImage( menuID, this.itemID, bytes);   
+    }
+
+    public String getName() {
+        return this.name; 
+    }
+    
+    public String getDescription(){
+        return this.description; 
+    }
+
+    public String getCategory() {
+        return this.category; 
+    }
+
+    public Allergen[] getAllergens(){
+        return this.allergens; 
     }
 
     @Override 

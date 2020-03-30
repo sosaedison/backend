@@ -160,6 +160,7 @@ public class Menu {
     public void save(){
         DBUtil.saveMenu( this );
         for( MenuItem mItem : this.menuItems ){
+            DBUtil.saveMenuItem( this.menuID, this.restaurantID, mItem ); 
             mItem.saveImage( menuID );
         }
     }

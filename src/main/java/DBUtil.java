@@ -1,6 +1,8 @@
 package AutoGarcon; 
 import java.sql.*; 
 import java.io.File; 
+import java.util.List; 
+import java.util.Arrays; 
 
 
 
@@ -132,8 +134,61 @@ public class DBUtil {
     }
 
     /**
+     * saveMenuItem - saves the menuItem to the database.   
+     * 
+     */
+    public static void saveMenuItem( int menuID, int restaurantID, MenuItem menuItem ){
+        Connection c = connectToDB(); 
+        CallableStatement stmt; 
+        ResultSet result; 
+
+        try {
+            stmt = c.prepareCall( "{call CreateNewMenuItem(?, ?, ?)}" ); 
+            stmt.setInt("mID", menuID ); 
+            stmt.setNString("iName", menuItem.getName()); 
+            stmt.setString("idesc", menuItem.getDescription()); 
+            stmt.setString("iCategory", menuItem.getCategory()); 
+
+            List<MenuItem.Allergen> allergens = Arrays.asList(menuItem.getAllergens());
+            if( allergens.contains( MenuItem.Allergen.MEAT ) ){
+                stmt.setInt("iMeat", 1);  
+            } else { 
+                stmt.setInt("iMeat", 0); 
+            }
+
+            if( allergens.contains( MenuItem.Allergen.DAIRY ) ){
+                stmt.setInt("iDairy", 1);
+            } else {
+                stmt.setInt("iDairy", 0); 
+            }
+
+            if( allergens.contains( MenuItem.Allergen.GLUTEN ) ){
+                stmt.setInt("iGluten", 1); 
+            } else {
+                stmt.setInt("iGluten", 0); 
+            }
+
+            if( allergens.contains( MenuItem.Allergen.NUTS ) ){
+                stmt.setInt("iNuts", 1); 
+            } else {
+                stmt.setInt("iNuts", 0); 
+            }
+
+            if( allergens.contains( MenuItem.Allergen.SOY ) ){
+                stmt.setInt("iSoy", 1); 
+            } else {
+                stmt.setInt("iSoy", 0); 
+            }
+        }
+        catch( SQLException e ){
+
+        }
+    }
+
+    /**
      * getMenuTimes: gets the menuTimes for the specified menuID. 
-     *
+     * Calls the GetMenuTimes stored procedure. 
+     * @param menuID the menuID to get menu times for. 
      */
     public static ResultSet getMenuTimes( int menuID ){
         Connection c = connectToDB(); 
