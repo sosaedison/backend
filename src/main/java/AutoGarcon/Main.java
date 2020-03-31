@@ -1,10 +1,11 @@
 package AutoGarcon; 
-import static spark.Spark.*; 
+import static spark.Spark.*;
+
+import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import com.google.gson.JsonSyntaxException;
-
-
+import spark.Route;
 
 
 /**
@@ -44,6 +45,8 @@ public class Main {
         return res;
     }
 
+
+
     public static Object addMenu( Request req, Response res) {
   
         Menu menu = Menu.menuFromJson( req.body() );   
@@ -59,13 +62,23 @@ public class Main {
         return res; 
     }
 
+    public static Object addUser( Request req, Response res) {
+
+        User user = User.userFromJson( req.body() );
+        user.addUser();
+
+
+        res.type("application/json");
+        return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+    }
+
     public static void initRouter(){
 
 //		get("/", Main::serveStatic);
 
         path("/api", () -> {
             path("/users", () -> {
-                post("/newuser",  Main::endpointNotImplemented ); 
+                post("/newuser", "application/json", Main::addUser);
                 path("/:userid", () -> {
                     get("", Main::endpointNotImplemented );
                     get("/favorites", Main::endpointNotImplemented);
@@ -93,12 +106,12 @@ public class Main {
 
     public static void startServer() {
 
-        //port(80);
+        port(80);
         // port(443); // HTTPS port
 		staticFiles.location("/public");
         //secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
         initRouter(); 
-        //DBUtil.connectToDB(); 
+        DBUtil.connectToDB();
 
         //Menu test = new Menu( 1, 1); 
     }
