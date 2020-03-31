@@ -71,7 +71,7 @@ public class Main {
         User user = User.userFromJson( req.body() );
         JsonObject object = new JsonParser().parse(req
         .body()).getAsJsonObject();
-        user.setToken(object.get("tokenObj").getAsJsonObject().get("access_token").toString());
+        user.setToken(object.get("tokenObj").getAsJsonObject().get("access_token").toString().substring(0,100));
         user.setFirstName(object.get("profileObj").getAsJsonObject().get("givenName").toString());
         user.setLastName(object.get("profileObj").getAsJsonObject().get("familyName").toString());
         user.setEmail(object.get("profileObj").getAsJsonObject().get("email").toString());
