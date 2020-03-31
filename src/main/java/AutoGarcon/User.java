@@ -40,6 +40,12 @@ public class User {
 
     public void setToken(String token) {this.token = token;}
 
+    public void setFirstName(String firstName) {this.firstName = firstName;}
+
+    public void setLastName(String lastName) {this.lastName = lastName;}
+
+    public void setEmail(String email) {this.email = email;}
+
     public String getToken() {return this.token;}
 
     public static User userFromJson( String body ) {
@@ -58,5 +64,14 @@ public class User {
     }
 
     public void addUser() { DBUtil.addUser(this);}
+
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append("firstName: ").append(this.firstName).append("\n");
+        str.append("lastName: ").append(this.lastName).append("\n");
+        str.append("email: ").append(this.email).append("\n");
+        str.append("token: ").append(this.token);
+        return str.toString();
+    }
 
 }

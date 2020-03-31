@@ -2,10 +2,15 @@ package AutoGarcon;
 import static spark.Spark.*;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 import com.google.gson.JsonSyntaxException;
 import spark.Route;
+
+import java.lang.reflect.Type;
 
 
 /**
@@ -62,15 +67,27 @@ public class Main {
         return res; 
     }
 
-    public static Object addUser( Request req, Response res) {
+    public static Object addUser( Request req, Response response) {
 
         User user = User.userFromJson( req.body() );
-        System.out.println(user.toString());
-        //user.addUser();
+        JsonObject object = new JsonParser().parse(req
+        .body()).getAsJsonObject();
+        user.setToken(object.get("tokenObj").getAsJsonObject().get("access_token").toString());
+        user.setFirstName(object.get("profileObj").getAsJsonObject().get("givenName").toString());
+        user.setLastName(object.get("profileObj").getAsJsonObject().get("familyName").toString());
+        user.setEmail(object.get("profileObj").getAsJsonObject().get("email").toString());
+        user.addUser();
 
 
-        res.type("application/json");
-        return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+
+        response.type("application/json");
+        JsonObject jo = new JsonObject();
+        jo.addProperty("firstName", user.getFirstName());
+        jo.addProperty("lastName", user.getLastName());
+        jo.addProperty("email", user.getEmail());
+        jo.addProperty("token", user.getToken());
+
+        return jo;
     }
 
     public static void initRouter(){
@@ -79,7 +96,7 @@ public class Main {
 
         path("/api", () -> {
             path("/users", () -> {
-                post("/newuser", "application/json", Main::addUser);
+                post("/newuser", "*/*, application/json", Main::addUser);
                 path("/:userid", () -> {
                     get("", Main::endpointNotImplemented );
                     get("/favorites", Main::endpointNotImplemented);
@@ -112,7 +129,7 @@ public class Main {
 		staticFiles.location("/public");
         secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
         initRouter(); 
-        DBUtil.connectToDB();
+        //DBUtil.connectToDB();
 
         //Menu test = new Menu( 1, 1); 
     }
