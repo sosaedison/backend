@@ -65,7 +65,8 @@ public class Main {
     public static Object addUser( Request req, Response res) {
 
         User user = User.userFromJson( req.body() );
-        user.addUser();
+        System.out.println(user.toString());
+        //user.addUser();
 
 
         res.type("application/json");
