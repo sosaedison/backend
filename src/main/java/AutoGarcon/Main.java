@@ -106,10 +106,10 @@ public class Main {
 
     public static void startServer() {
 
-        port(80);
-        // port(443); // HTTPS port
+        //port(80);
+        port(443); // HTTPS port
 		staticFiles.location("/public");
-        //secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
+        secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
         initRouter(); 
         DBUtil.connectToDB();
 
