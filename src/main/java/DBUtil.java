@@ -55,7 +55,6 @@ public class DBUtil {
 
     /**
      * getMenu: Gets a specifed menu from a specifed restaurant. 
-     * @author Tyler Beverley
      * @param restaurantID
      * @param menuID 
      * @return SQL result representing the restaurantID, and menuID.  
@@ -112,7 +111,7 @@ public class DBUtil {
         int menuID; 
         
         try {
-            stmt = c.prepareCall("{call CreateNewMenu(?, ?, ?, ?, ?)}");
+            stmt = c.prepareCall("{call CreateNewMenu(?, ?, ?, ?, ?, ?)}");
             stmt.setInt( "mStatus", menu.getStatus() ); 
             stmt.setInt("restaurantID", menu.getRestaurantID() ); 
             stmt.setNString("menuName", menu.getName() ); 
@@ -121,7 +120,6 @@ public class DBUtil {
             stmt.registerOutParameter("menuID", Types.INTEGER); 
 
             result = stmt.executeQuery(); 
-            result.beforeFirst(); 
             
             //get output param 
             menuID = stmt.getInt("menuID"); 
@@ -135,15 +133,17 @@ public class DBUtil {
 
     /**
      * saveMenuItem - saves the menuItem to the database.   
-     * 
+     * @param menuID - the menu that contains the menuItem. 
+     * @param restaurantID - the restaurant associated with the restaurant.  
+     * @param menuItem - the menuItem object to add to the database. 
      */
-    public static void saveMenuItem( int menuID, int restaurantID, MenuItem menuItem ){
+    public static boolean saveMenuItem( int menuID, int restaurantID, MenuItem menuItem ){
         Connection c = connectToDB(); 
         CallableStatement stmt; 
         ResultSet result; 
 
         try {
-            stmt = c.prepareCall( "{call CreateNewMenuItem(?, ?, ?)}" ); 
+            stmt = c.prepareCall( "{call CreateNewMenuItem(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}" ); 
             stmt.setInt("mID", menuID ); 
             stmt.setNString("iName", menuItem.getName()); 
             stmt.setString("idesc", menuItem.getDescription()); 
@@ -179,10 +179,23 @@ public class DBUtil {
             } else {
                 stmt.setInt("iSoy", 0); 
             }
-        }
-        catch( SQLException e ){
+
+            stmt.setObject("iPrice",  menuItem.getPrice(), Types.DECIMAL, 2 ); 
+            stmt.registerOutParameter("menuItemID", Types.INTEGER); 
+
+            result = stmt.executeQuery(); 
+            
+            //get output param 
+            int menuItemID = stmt.getInt("menuItemID"); 
+            menuItem.setItemID( menuItemID ); 
 
         }
+        catch( SQLException e ){
+            System.out.printf("SQL Exception while executing CreateNewMenuItem.\n" + 
+                    "Exception: %s\n", e.toString() );
+            return false; 
+        }
+        return true; 
     }
 
     /**
@@ -195,7 +208,7 @@ public class DBUtil {
         CallableStatement stmt; 
         ResultSet result = null;
 
-        try{ 
+        try { 
             stmt = c.prepareCall("{call GetMenuTimes(?)}"); 
             stmt.setInt("mID", menuID ); 
             result = stmt.executeQuery(); 

@@ -1,1 +1,2 @@
 curl -X POST -H "Content-Type: application/json" -d @./test/menu1.json  http://localhost/api/restaurant/21/menu/add
+curl -X GET http://localhost/api/restaurant/21/menu

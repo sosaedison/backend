@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * @author Tyler Beverley 
  *
- * Represetns information pertaining to items
+ * Represents information pertaining to items
  * that are conatined within a menu.
  */
 public class MenuItem { 
@@ -36,6 +36,12 @@ public class MenuItem {
     private float price; 
     private transient File image; 
 
+
+    /**
+     * menuItemFromJson - create a menuItem from a JSON string. 
+     * @param body - the string containing the menuItem in JSON format. 
+     * @return a MenuItem with the feilds conatined from the JSON string. 
+     */
     public static MenuItem menuItemFromJson( String body ) {
         Gson gson = new Gson(); 
         MenuItem item = new MenuItem(); 
@@ -57,6 +63,11 @@ public class MenuItem {
         this.allergens = new Allergen[0]; 
     }
 
+    /** 
+     * MenuItem - Create a menuitem object from a sql query row. 
+     * @param ResultSet -  a sql result set from a database query to turn into a MenuItem object. 
+     * @return a full menuItem object. 
+     */
     public MenuItem( ResultSet rs ){
 
         ArrayList<Allergen> allergens = new ArrayList<Allergen>(); 
@@ -90,6 +101,12 @@ public class MenuItem {
 
     }
 
+    /**
+     * menuItems - a factory method that creates a list of menuItems 
+     * that are contained in given menuID. 
+     * @param menuID - the menu that you want to get menuItems from. 
+     * @return MenuItem[] - an array of menuItems. 
+     */
     public static MenuItem[] menuItems( int menuID ){
 
         ResultSet rs = DBUtil.getMenuItems( menuID ); 
@@ -112,8 +129,15 @@ public class MenuItem {
         if( this.imageBytes == null ){
             return; 
         }
+        if( menuID == -1 || this.itemID == -1 ){
+            return; 
+        }
         byte[] bytes = ImageUtil.deserialize( this.imageBytes );
         this.image = ImageUtil.saveImage( menuID, this.itemID, bytes);   
+    }
+
+    public void setItemID( int id ) {
+        this.itemID = id; 
     }
 
     public String getName() {
@@ -131,6 +155,11 @@ public class MenuItem {
     public Allergen[] getAllergens(){
         return this.allergens; 
     }
+
+    public float getPrice() {
+        return this.price; 
+    }
+    
 
     @Override 
     public String toString() {

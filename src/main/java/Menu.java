@@ -143,7 +143,7 @@ public class Menu {
 
         try { 
             menu = gson.fromJson( body, Menu.class);
-            int menuID = menu.menuID;
+            //int menuID = menu.menuID;
 
         } catch( JsonSyntaxException e  ){
             System.out.printf("Failed to deserialize the request data into a Menu Object.\n" + 
@@ -157,12 +157,18 @@ public class Menu {
      * save: Saves the state of the menu to the databse, 
      * and saves the images to the file system.
      */
-    public void save(){
+    public boolean save(){
         DBUtil.saveMenu( this );
         for( MenuItem mItem : this.menuItems ){
-            DBUtil.saveMenuItem( this.menuID, this.restaurantID, mItem ); 
+            boolean itemSaved; 
+            itemSaved = DBUtil.saveMenuItem( this.menuID, this.restaurantID, mItem ); 
             mItem.saveImage( menuID );
+
+            if( !itemSaved ){ 
+                return false; 
+            }
         }
+        return true; 
     }
 
     public int getMenuID(){

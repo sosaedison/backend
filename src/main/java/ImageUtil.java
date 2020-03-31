@@ -10,7 +10,7 @@ import com.google.gson.JsonPrimitive;
 public class ImageUtil { 
 
 
-    public static final String basePath = "./../images/menus/";
+    public static final String basePath = "./images/menus/";
 
     public static File saveImage( int menuID, int menuItemID, byte[] bytes ){
 
