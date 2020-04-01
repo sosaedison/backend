@@ -1,12 +1,9 @@
 package AutoGarcon; 
 import static spark.Spark.*;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import spark.Request;
 import spark.Response;
-import com.google.gson.JsonSyntaxException;
 import spark.Route;
 
 import java.lang.reflect.Type;
@@ -34,6 +31,7 @@ import java.lang.reflect.Type;
  */
 public class Main {
 
+    final static String EMPTY = "";
 
     /*
      * Can implement custom 501 handling in the future. 
@@ -67,34 +65,52 @@ public class Main {
     }
 
     public static Object addUser( Request req, Response response) {
+        String firstName;
+        String lastName;
+        String email;
+        String token;
+        User user = new User();
+        JsonObject object = new JsonParser().parse(req.body()).getAsJsonObject();
 
-        User user = User.userFromJson( req.body() );
-        JsonObject object = new JsonParser().parse(req
-        .body()).getAsJsonObject();
-        user.setToken(object.get("tokenObj").getAsJsonObject().get("access_token").toString().substring(0,100));
-        user.setFirstName(object.get("profileObj").getAsJsonObject().get("givenName").toString());
-        user.setLastName(object.get("profileObj").getAsJsonObject().get("familyName").toString());
-        user.setEmail(object.get("profileObj").getAsJsonObject().get("email").toString());
-        user.addUser();
+        if(req.body() == null) {
+            if (!object.get("tokenObj").getAsJsonObject().get("access_token").toString().equals(EMPTY)) {
+                firstName = object.get("profileObj").getAsJsonObject().get("givenName").toString();
+                lastName = object.get("profileObj").getAsJsonObject().get("familyName").toString();
+                email = object.get("profileObj").getAsJsonObject().get("email").toString();
+                token = object.get("tokenObj").getAsJsonObject().get("access_token").toString();
 
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setEmail(email);
+                user.setToken(token);
 
+                user.addUser();
 
-        response.type("application/json");
-        JsonObject jo = new JsonObject();
-        jo.addProperty("firstName", user.getFirstName());
-        jo.addProperty("lastName", user.getLastName());
-        jo.addProperty("email", user.getEmail());
-        jo.addProperty("token", user.getToken());
-
-        return jo;
+                response.type("application/json");
+                JsonObject jo = new JsonObject();
+                jo.addProperty("firstName", user.getFirstName());
+                jo.addProperty("lastName", user.getLastName());
+                jo.addProperty("email", user.getEmail());
+                jo.addProperty("token", user.getToken());
+                return jo;
+            }
+        }
+//        JsonObject jo = new JsonObject();
+//        jo.addProperty("STATUS", "500");
+//        jo.addProperty("MESSAGE","Request body is null or no token found!");
+        response.status(500);
+        return response;
     }
 
     public static void initRouter(){
 
-//		get("/", Main::serveStatic);
+		get("/", Main::serveStatic);
 
         path("/api", () -> {
             path("/users", () -> {
+                before((request, response) -> {
+                    response.type("application/json");
+                });
                 post("/newuser", "*/*, application/json", Main::addUser);
                 path("/:userid", () -> {
                     get("", Main::endpointNotImplemented );
@@ -124,11 +140,11 @@ public class Main {
     public static void startServer() {
 
         //port(80);
-        port(443); // HTTPS port
+        //port(443); // HTTPS port
 		staticFiles.location("/public");
-        secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
+        ///secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
         initRouter(); 
-        //DBUtil.connectToDB();
+        DBUtil.connectToDB();
 
         //Menu test = new Menu( 1, 1); 
     }

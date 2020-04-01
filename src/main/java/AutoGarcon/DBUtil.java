@@ -136,11 +136,10 @@ public class DBUtil {
         CallableStatement stmt;
 
         try {
-            stmt = c.prepareCall("{call CreateUser(?,?,?,?,?)}");
+            stmt = c.prepareCall("{call CreateUser(?,?,?,?)}");
             stmt.setNString("firstName", user.getFirstName());
             stmt.setNString("lastName", user.getLastName());
             stmt.setNString("email", user.getEmail());
-            stmt.setNString("hashedPass", " ");
             stmt.setNString("token", user.getToken());
 
             result = stmt.executeQuery();
