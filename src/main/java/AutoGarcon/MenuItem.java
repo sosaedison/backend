@@ -98,7 +98,6 @@ public class MenuItem {
             System.out.printf("Failed to get the required fields while creating a menuItem object.\n" + 
                     "Exception: %s\n", e.toString() );
         }
-
     }
 
     /**

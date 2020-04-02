@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
  */
 public class Main {
 
-    final static String EMPTY = "";
 
     /*
      * Can implement custom 501 handling in the future. 
@@ -54,19 +53,18 @@ public class Main {
         System.out.printf("Printing Incoming menu:\n %s\n", menu.toString());
         boolean saved = menu.save(); 
 
-        if (!menu.isDefault() || !saved) {
+        if (!menu.isDefault() && saved) {
             res.status(200);
             return "Successfully recieved menu.";
         } else {
             res.status(500); 
-            return "Error parsing menu"; 
+            return "Error recieving menu"; 
         }
     }
 
 
     public static Object getMenu( Request req, Response res ){
 
-            System.out.println( "HELLO " + req.params(":restaurantid")); 
         try{ 
             int restaurantID = Integer.parseInt(req.params(":restaurantid")); 
             res.status(200); 
@@ -75,39 +73,21 @@ public class Main {
             res.status(400); 
             return "Failed to parse restaurantID as an integer."; 
         }
-
-
-<<<<<<< HEAD:src/main/java/Main.java
-=======
-        return ""; 
->>>>>>> sosa:src/main/java/AutoGarcon/Main.java
     }
 
-    public static Object addUser( Request req, Response response) {
-        String firstName;
-        String lastName;
-        String email;
-        String token;
-        User user = new User();
-        JsonObject object = new JsonParser().parse(req.body()).getAsJsonObject();
+    public static Object addUser( Request req, Response res) {
 
-        if (!object.get("tokenObj").getAsJsonObject().get("access_token").toString().equals(EMPTY)) {
-            firstName = object.get("profileObj").getAsJsonObject().get("givenName").toString();
-            lastName = object.get("profileObj").getAsJsonObject().get("familyName").toString();
-            email = object.get("profileObj").getAsJsonObject().get("email").toString();
-            token = object.get("tokenObj").getAsJsonObject().get("access_token").toString();
+        User user = User.userFromJson( req.body() ); 
+        boolean saved = user.save(); 
 
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            user.setToken(token);
-            user.addUser();
-            return user; 
+        if( !user.isDefault() && saved ){
+            res.status(200); 
+            return "Successfully recieved user."; 
+        } else {
+            res.status(500); 
+            return "Error receiving User"; 
         }
-        else {
-            response.status(500);
-            return "Failed to add the user.";
-        }
+
     }
 
     public static void initRouter(){
@@ -147,17 +127,10 @@ public class Main {
 
     public static void startServer() {
 
-<<<<<<< HEAD:src/main/java/Main.java
         port(80);
         // port(443); // HTTPS port
 		staticFiles.location("/public/build");
         //secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
-=======
-        //port(80);
-        //port(443); // HTTPS port
-		staticFiles.location("/public");
-        ///secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
->>>>>>> sosa:src/main/java/AutoGarcon/Main.java
         initRouter(); 
         DBUtil.connectToDB();
     }

@@ -244,7 +244,7 @@ public class DBUtil {
         return result;
     }
 
-    public static void addUser(User user) {
+    public static boolean addUser(User user) {
 
         ResultSet result = null;
         Connection c = connectToDB();
@@ -258,11 +258,12 @@ public class DBUtil {
             stmt.setNString("token", user.getToken());
 
             result = stmt.executeQuery();
-            result.beforeFirst();
+            return true;
 
         } catch (SQLException e) {
             System.out.printf("SQL Exception while executing AddUser.\n" +
                     "Exception: %s\n", e.toString() );
+            return false; 
         }
     }
 
