@@ -7,4 +7,6 @@
 */static/*
 ./target
 *.swp
+*.iml
+./src/main/resources/*
 /target/
