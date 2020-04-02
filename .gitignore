@@ -9,3 +9,4 @@
 *.swp
 *.iml
 ./src/main/resources/*
+/target/

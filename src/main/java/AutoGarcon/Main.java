@@ -1,10 +1,12 @@
 package AutoGarcon; 
-import static spark.Spark.*; 
+import static spark.Spark.*;
+
+import com.google.gson.*;
 import spark.Request;
 import spark.Response;
-import com.google.gson.JsonSyntaxException;
+import spark.Route;
 
-
+import java.lang.reflect.Type;
 
 
 /**
@@ -27,20 +29,23 @@ import com.google.gson.JsonSyntaxException;
  */
 public class Main {
 
+    final static String EMPTY = "";
 
     /*
      * Can implement custom 501 handling in the future. 
      */
     public static Object endpointNotImplemented( Request req, Response res ){
         res.status(501); 
-        return res; 
+        return "Endpoint Not Implemented"; 
     }
 
     public static Object serveStatic(Request req, Response res) {
         res.type("text/html");
         res.redirect("index.html", 201);
-        return res;
+        return "";
     }
+
+
 
     public static Object addMenu( Request req, Response res) {
   
@@ -72,9 +77,38 @@ public class Main {
         }
 
 
+<<<<<<< HEAD:src/main/java/Main.java
+=======
+        return ""; 
+>>>>>>> sosa:src/main/java/AutoGarcon/Main.java
     }
 
+    public static Object addUser( Request req, Response response) {
+        String firstName;
+        String lastName;
+        String email;
+        String token;
+        User user = new User();
+        JsonObject object = new JsonParser().parse(req.body()).getAsJsonObject();
 
+        if (!object.get("tokenObj").getAsJsonObject().get("access_token").toString().equals(EMPTY)) {
+            firstName = object.get("profileObj").getAsJsonObject().get("givenName").toString();
+            lastName = object.get("profileObj").getAsJsonObject().get("familyName").toString();
+            email = object.get("profileObj").getAsJsonObject().get("email").toString();
+            token = object.get("tokenObj").getAsJsonObject().get("access_token").toString();
+
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setToken(token);
+            user.addUser();
+            return user; 
+        }
+        else {
+            response.status(500);
+            return "Failed to add the user.";
+        }
+    }
 
     public static void initRouter(){
 
@@ -82,7 +116,10 @@ public class Main {
 
         path("/api", () -> {
             path("/users", () -> {
-                post("/newuser",  Main::endpointNotImplemented ); 
+                before((request, response) -> {
+
+                });
+                post("/newuser", "application/json", Main::addUser, new JsonTransformer() );
                 path("/:userid", () -> {
                     get("", Main::endpointNotImplemented );
                     get("/favorites", Main::endpointNotImplemented);
@@ -110,12 +147,19 @@ public class Main {
 
     public static void startServer() {
 
+<<<<<<< HEAD:src/main/java/Main.java
         port(80);
         // port(443); // HTTPS port
 		staticFiles.location("/public/build");
         //secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
+=======
+        //port(80);
+        //port(443); // HTTPS port
+		staticFiles.location("/public");
+        ///secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
+>>>>>>> sosa:src/main/java/AutoGarcon/Main.java
         initRouter(); 
-        DBUtil.connectToDB(); 
+        DBUtil.connectToDB();
     }
 
 	public static void main(String[] args) {
