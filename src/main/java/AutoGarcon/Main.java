@@ -42,7 +42,7 @@ public class Main {
     public static Object serveStatic(Request req, Response res) {
         res.type("text/html");
         res.redirect("index.html", 201);
-        return res;
+        return "";
     }
 
 
@@ -59,7 +59,7 @@ public class Main {
             res.status(500); 
         }
 
-        return res; 
+        return ""; 
     }
 
     public static Object addUser( Request req, Response response) {
@@ -70,20 +70,18 @@ public class Main {
         User user = new User();
         JsonObject object = new JsonParser().parse(req.body()).getAsJsonObject();
 
-        if(req.body() == null) {
-            if (!object.get("tokenObj").getAsJsonObject().get("access_token").toString().equals(EMPTY)) {
-                firstName = object.get("profileObj").getAsJsonObject().get("givenName").toString();
-                lastName = object.get("profileObj").getAsJsonObject().get("familyName").toString();
-                email = object.get("profileObj").getAsJsonObject().get("email").toString();
-                token = object.get("tokenObj").getAsJsonObject().get("access_token").toString();
+        if (!object.get("tokenObj").getAsJsonObject().get("access_token").toString().equals(EMPTY)) {
+            firstName = object.get("profileObj").getAsJsonObject().get("givenName").toString();
+            lastName = object.get("profileObj").getAsJsonObject().get("familyName").toString();
+            email = object.get("profileObj").getAsJsonObject().get("email").toString();
+            token = object.get("tokenObj").getAsJsonObject().get("access_token").toString();
 
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setEmail(email);
-                user.setToken(token);
-                user.addUser();
-                return user; 
-            }
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setToken(token);
+            user.addUser();
+            return user; 
         }
         else {
             response.status(500);

@@ -68,7 +68,6 @@ public class DBUtil {
             System.out.printf("Failed to find menuid: %d.\n", menuID);
         }
 
-<<<<<<< HEAD:src/main/java/DBUtil.java
         int resultID; 
         try{
             hasResult = menus.next(); 
