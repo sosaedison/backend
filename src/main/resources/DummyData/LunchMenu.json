@@ -1,0 +1,206 @@
+{
+    "menuID": 3,
+	"status": "Active",
+	"menuName": "Lunch",
+	"menuTye": "Lunch",
+	"timeRange": {
+		"start": 1100,
+		"end": 2200
+	},
+    "numItems": 24,
+    "items": [
+        {
+            "category": "Appetizer",
+            "name": "Boneless Wings",
+            "description": "Crispy boneless wings with styles that go way beyond Buffalo.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 11.19
+        },{
+            "category": "Appetizer",
+            "name": "Mozzarella Sticks",
+            "description": "Mozzarella and Asiago cheese. Sprinkled with Parmesan-Romano. Served with marinara sauce.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 9.28
+        },{
+            "category": "Appetizer",
+            "name": "Pan-Seared Pot Stickers",
+            "description": "Steamed pork dumplings with Szechwan dipping sauce.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 10.29
+        },{
+            "category": "Appetizer",
+            "name": "Traditional Wings",
+            "description": "10 Traditional bone-in wings with styles that go way beyond Buffalo.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 13.39
+        },{
+            "category": "Appetizer",
+            "name": "Green Bean Fries",
+            "description": "Breaded and served with Cucumber-Wasabi Ranch.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 8.28
+        },{
+            "category": "Burgers",
+            "name": "Bacon Cheesburger",
+            "description": "White cheddar, all-natural cheddar spread, lettuce, tomato, red onions, pickles, hickory-smoked bacon.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 11.89
+        },{
+            "category": "Burgers",
+            "name": "Cheeseburger",
+            "description": "American cheese, lettuce, tomato, red onions and pickles.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 11.19
+        },{
+            "category": "Chicken,Seafood & Pasta",
+            "name": "Cajun Shrimp & Chicken Pasta",
+            "description": "Sauteed chicken, shrimp, red bell peppers in a spicy Cajun Alfredo sauce, Parmesan-Romano and fettuccine. Served with a warm garlic breadstick.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 15.49
+        },{
+            "category": "Chicken,Seafood & Pasta",
+            "name": "Chicken Parmesan Pasta",
+            "description": "Crispy chicken breast with marinara and cheese on fettuccine Alfredo. Topped with Parmesan crisps. Served with a warm garlic breadstick.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 15.49
+        },{
+            "category": "Chicken,Seafood & Pasta",
+            "name": "Signature Whiskey-Glazed Chicken",
+            "description": "Signature Whiskey-Glaze over two grilled chicken breasts. Served with mashed potatoes and lemon-butter broccoli.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 15.99
+        },{
+            "category": "Chicken,Seafood & Pasta",
+            "name": "Crispy Chicken Tenders",
+            "description": "Crispy fried chicken tenders served with coleslaw, seasoned fries and Honey Mustard dressing.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 13.39
+        },{
+            "category": "Chicken,Seafood & Pasta",
+            "name": "Fried Shrimp",
+            "description": "Crispy shrimp with cocktail sauce. Served with coleslaw and seasoned fries.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 15.29
+        },{
+            "category": "Chicken,Seafood & Pasta",
+            "name": "Fish & Chips",
+            "description": "Beer-battered golden cod fillets served with seasoned fries, coleslaw, tartar sauce and a lemon wedge.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 15.29
+        },{
+            "category": "Steak & Ribs",
+            "name": "Big Ribs Whiskey-Glazed",
+            "description": "Full-rack of slow-cooked, fall-off-the-bone tender big back pork ribs basted with Signature Whiskey Glaze fire-grilled and served with seasoned fries and coleslaw.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 23.19
+        },{
+            "category": "Steak & Ribs",
+            "name": "Center-Cut Serloin",
+            "description": "6 ounces of flavorful center-cut sirloin topped with Parmesan Butter. Served with mashed potatoes and lemon-butter broccoli.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 13.89
+        },{
+            "category": "Steak & Ribs",
+            "name": "Center-Cut Sirloin & Crispy Shrimp",
+            "description": "6 ounces of flavorful center-cut sirloin topped with Parmesan Butter and crispy fried shrimp with cocktail sauce. Served with mashed potatoes and lemon-butter broccoli.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 16.48
+        },{
+            "category": "Salads & Soups",
+            "name": "White Cheddar Broccoli Cheese Soup",
+            "description": "A creamy blend of white cheddar cheeses with broccoli.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 5.19
+        },{
+            "category": "Salads & Soups",
+            "name": "Caesar Salad With Grilled Chicken",
+            "description": "Grilled chicken, romaine, Parmesan-Romano, Caesar dressing, Asiago croutons and Parmesan crisps.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 11.39
+        },{
+            "category": "Salads & Soups",
+            "name": "Caesar Salad",
+            "description": "Romaine, Parmesan-Romano, Caesar dressing, Asiago croutons and Parmesan crisps. Served with a warm garlic breadstick.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 5.19
+        },{
+            "category": "Salads & Soups",
+            "name": "House Salad",
+            "description": "Mixed greens, sliced carrots, red cabbage, tomatoes, cucumber, mixed cheese and Asiago croutons with choice of dressing on the side and a warm garlic breadstick.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 5.19
+        },{
+            "category": "Sides",
+            "name": "Seasoned Fries",
+            "description": "Crispy, seasoned, and fried to perfection.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 0.00
+        },{
+            "category": "Sides",
+            "name": "ColeSlaw",
+            "description": "Slaw mix of red and green cabbage, shredded carrots and fresh spinach tossed in creamy coleslaw dressing.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 0.00
+        },{
+            "category": "Sides",
+            "name": "Lemon-Butter Broccoli",
+            "description": "Fresh steamed broccoli with Parmesan butter and lemon.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 0.00
+        },{
+            "category": "Sides",
+            "name": "Mashed Potatoes",
+            "description": "Creamy mashed potatoes blended with cheddar cheese, sour cream and real butter.",
+            "image": "",
+            "allergens": "",
+            "spice": "",
+            "price": 0.00
+        }
+    ]
+}

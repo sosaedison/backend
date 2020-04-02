@@ -1,0 +1,246 @@
+{
+  "menuID": 4,
+  "status": "Active",
+  "menuName": "Breakfast",
+  "menuTye": "Breakfast",
+  "timeRange": {
+    "start": 700,
+    "end": 1100
+  },
+  "numItems": 29,
+  "items":[
+    {
+      "category": "Omelettes",
+      "name": "Granny's Country",
+      "description": "Filled with diced grilled ham, onions, green peppers, American cheese, cheese sauce and crispy hash browns. Topped with all of the same!",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 11.29
+    },{
+      "category": "Omelettes",
+      "name": "The Everything",
+      "description": "Diced grilled ham, crimini mushrooms, tomatoes, onions, green peppers and American cheese – this classic omelet has it all!",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 12.99
+    },{
+      "category": "Omelettes",
+      "name": "Meat ‘N Potatoes",
+      "description": "Pork sausage, Applewood smoked bacon, smoked ham, grilled red onions and Cheddar atop an omelet stuffed with more of the same, plus crispy tots.",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 11.29
+    },{
+      "category": "Omelettes",
+      "name": "Ham ‘N Cheese",
+      "description": "A traditional favorite of diced grilled ham and American cheese. Served with three buttermilk pancakes. No sides",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 10.99
+    },{
+      "category": "Omelettes",
+      "name": "Turkey Sausage",
+      "description": "An egg white omelet filled with turkey sausage, crimini mushrooms, green bell peppers, onions, diced tomatoes, and Swiss cheese. Served with fresh fruit and dry whole wheat toast. No sides.",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 10.49
+    },{
+      "category": "Breakfast",
+      "name": "French Toast Platter",
+      "description": "Three slices of Vienna bread dipped in our signature batter, grilled and sprinkled with powdered sugar.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 9.49
+    },{
+      "category": "Breakfast",
+      "name": "Scratch-Made Belgian Waffle Platter",
+      "description": "A Belgian Waffle dusted with powdered sugar for the perfect dash of sweetness.",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 9.99
+    },{
+      "category": "Pancakes",
+      "name": "Cupcake Pancakes",
+      "description": "What could be better than our signature buttermilk pancakes? How about when they’re filled with festive rainbow sprinkles, then topped with cupcake icing, more rainbow sprinkles and whipped topping! These sweet treats are part of a tasty trio, perfect for sharing with your friends and family.",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 10.29
+    },{
+      "category": "Pancakes",
+      "name": "Italian Cannoli Pancakes",
+      "description": "Three buttermilk pancakes rolled and filled with sweet Ricotta cream and chocolate pieces topped with crunchy cannoli pieces, chocolate chips and creamy whipped topping.",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 10.29
+    },{
+      "category": "Pancakes",
+      "name": "Mexican Churro Pancakes",
+      "description": "Four buttermilk pancakes layered with a fiesta of warm cinnamon spread, crunchy mini-churros and sweet cream cheese icing. Crowned with whipped topping",
+      "image": "",
+      "allergens": "",
+      "spice": "none",
+      "price": 10.29
+    },{
+      "category": "Breakfast",
+      "name": "Breakfast Sampler",
+      "description": "With our sampler, two is the magic number! That's two eggs*, two hickory-smoked bacon strips, two pork sausage links, two pieces of ham, two fluffy buttermilk pancakes and our golden hash browns.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 12.59
+    },{
+      "category": "Breakfast",
+      "name": "Split Decision Breakfast",
+      "description": "Our hearty combo comes with two eggs*, two crispy strips of hickory-smoked bacon, two pork sausage links, two French toast triangles and two buttermilk pancakes.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 12.59
+    },{
+      "category": "Breakfast",
+      "name": "Sirloin Tips & Eggs",
+      "description": "Sirloin tips* with grilled onions & mushrooms. Served with 2 eggs* your way, hash browns & 2 buttermilk pancakes.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 14.99
+    },{
+      "category": "Breakfast",
+      "name": "Country Fried Steak & Eggs",
+      "description": "Fried beef steak smothered in in gravy, then served with two eggs*, hash browns and two buttermilk pancakes.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 12.99
+    },{
+      "category": "Omelettes",
+      "name": "Spicy Poblano Omelette",
+      "description": "In this spicy omelette, you’ll enjoy fire-roasted Poblano peppers, red bell peppers & onions, shredded beef, Jack & cheddar blend, fresh avocado, Poblano cream and spicy, chopped Serrano peppers. Comin’ in hot!",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 14.69
+    },{
+      "category": "Omelettes",
+      "name": "Big Steak Omelette",
+      "description": "Tender and tasty strips of steak, hash browns, fresh green peppers, onions, mushrooms, tomatoes and Cheddar cheese. Then we serve your omelette with your choice of one delicious side: three buttermilk pancakes, hash browns, toast or fresh seasonal mixed fruit. You can also choose a side of three flavored pancakes and add avocado for an additional cost. Enjoy it with salsa on the side.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 14.99
+    },{
+      "category": "Omelettes",
+      "name": "Chicken Fajita Omelette",
+      "description": "Our omelette is filled with grilled fajita-seasoned chicken breast strips, roasted poblano and red bell peppers with salsa, and a blend of cheeses. Sour cream tops it off just right! Then we serve your omelette with your choice of one delicious side: three buttermilk pancakes, hash browns, toast or fresh seasonal mixed fruit. You can also choose a side of three flavored pancakes and add avocado for an additional cost.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 13.69
+    },{
+      "category": "Omelettes",
+      "name": "Colorado Omelette",
+      "description": "Filled with the savory things you crave — hickory-smoked chopped bacon, pork sausage, shredded beef, ham, fresh onions and green peppers and Cheddar cheese. Then we serve your omelette with your choice of one delicious side: three buttermilk pancakes, hash browns, toast or fresh seasonal mixed fruit. You can also choose a side of three flavored pancakes for an additional cost. Enjoy it with salsa on the side.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 14.99
+    },{
+      "category": "Omelettes",
+      "name": "Bacon Temptation Omelette",
+      "description": "Everything's better with bacon! That’s why we loaded this tempting favorite with lots of chopped hickory-smoked bacon, Jack & Cheddar cheese & a White Cheddar Sauce. Topped with tomatoes and even more bacon. Then we serve your omelette with your choice of one delicious side: three buttermilk pancakes, hash browns, toast or fresh seasonal mixed fruit. You can also choose a side of three flavored pancakes for an additional charge.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 12.69
+    },{
+      "category": "Omelettes",
+      "name": "Build Your Own Omelette",
+      "description": "To create your favorite omelette, start by choosing American, Cheddar, Jack, Pepper Jack, Cheddar blend, White Cheddar or Swiss cheese. Then we serve your omelette with your choice of one delicious side: three buttermilk pancakes, hash browns, toast or fresh fruit.",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 10.79
+    },{
+      "category": "Add-On",
+      "name": "American Cheese",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Add-On",
+      "name": "Cheddar Cheese",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Add-On",
+      "name": "Bacon",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Add-On",
+      "name": "Ham",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Add-On",
+      "name": "Avocado",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Add-On",
+      "name": "Fesh Mushrooms",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Sides",
+      "name": "Buttered Toast",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Sides",
+      "name": "Hash Browns",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    },{
+      "category": "Sides",
+      "name": "3 Pancakes",
+      "description": "",
+      "image": "",
+      "allergens": "",
+      "spice": "",
+      "price": 0.00
+    }
+  ]
+}

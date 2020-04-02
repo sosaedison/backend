@@ -1,8 +1,7 @@
-package AutoGarcon; 
-import java.sql.*; 
-import java.io.File; 
-import java.util.List; 
-import java.util.Arrays; 
+package AutoGarcon;
+import java.sql.*;
+import java.io.File;
+
 
 
 /**
@@ -15,13 +14,26 @@ import java.util.Arrays;
  * HOST_NAME is used to determine if the program is running on the host.
  *
  * connection string = protocol//user:password@[hosts][/database][?properties]
- * Note that the connection obj is not thread safe. So for now we will create 
- * a new one everytime. 
+ * Note that the connection obj is not thread safe. So for now we will create
+ * a new one everytime.
+ *
+ * TODO: ?implement Binary Search on a result set for finding a specified menuID.
+ *
  */
 public class DBUtil {
 
     public final static String HOST_URL = "auto-garcon-database.cd4hzqa9i8mi.us-east-1.rds.amazonaws.com";
     private Connection connection;
+
+
+    /**
+     * uploadImage: Uploads the image to google's api.
+     *
+     *
+     */
+    public static void uploadImage( File file ){
+
+    }
 
 
     /**
@@ -37,27 +49,34 @@ public class DBUtil {
         Connection c = connectToDB();
         CallableStatement stmt;
 
-        try { 
-            stmt = c.prepareCall("{call GetMenusByRestaurantId(?)}" ); 
-            stmt.setInt( "id", restaurantID );  
-            
-            result = stmt.executeQuery(); 
-            result.beforeFirst(); 
+        try {
+            stmt = c.prepareCall("{call GetMenusByRestaurantId(?)}" );
+            stmt.setInt( "id", restaurantID );
+
+            boolean hasResult = stmt.execute();
+
+            if(hasResult){
+                result = stmt.getResultSet();
+                result.beforeFirst();
+            }
+
         } catch( SQLException e ){
             System.out.printf("Failed to exectue GetMenusByRestaurantId stored procedure.\n" +
                     "Exception: " + e.toString() );
             System.exit(1);
         }
+
         return result;
     }
 
     /**
-     * getMenu: Gets a specifed menu from a specifed restaurant. 
+     * getMenu: Gets a specifed menu from a specifed restaurant.
+     * @author Tyler Beverley
      * @param restaurantID
      * @param menuID
      * @return SQL result representing the restaurantID, and menuID.
      */
-    public static ResultSet getMenu( int menuID, int restaurantID ){
+    public static ResultSet getMenu(int restaurantID, int menuID ){
 
         ResultSet menus;
         boolean hasResult = false ;
@@ -68,183 +87,49 @@ public class DBUtil {
             System.out.printf("Failed to find menuid: %d.\n", menuID);
         }
 
-        int resultID; 
-        try{
-            hasResult = menus.next(); 
-        } catch (SQLException e){
-            System.out.printf("Failed to get next row in result set.\n Exception: %s\n", e.toString() );
-            return null;
-        }
-
-        while( hasResult ){
+        int resultID;
+        do{
             try {
-                resultID = menus.getInt( "menuID" ); 
+                hasResult = menus.next();
+                resultID = menus.getInt( "menuID" );
+
                 if( resultID == menuID ){
                     return menus;
                 } else {
                     hasResult = menus.next();
                 }
+
             } catch (SQLException e ){
                 System.out.printf("SQL Excpetion when trying to get next row in result set.\n" +
                         "Exception: " + e.toString() );
                 System.exit(1);
             }
-        }
+        } while( hasResult );
         return menus;
     }
 
-    /**
-     * saveMenu: Saves the passed menu object to the database. 
-     * Inserting into the database will give us a menuID to use, so 
-     * this function will get that ID, and save it. 
-     * It will save all fields, including any number of time ranges that are
-     * included in the menu object. 
-     * @param menu Menu object to be saved to the database. 
-     */
     public static void saveMenu( Menu menu ){
-
-        Connection c = connectToDB(); 
-        CallableStatement stmt; 
-        ResultSet result; 
-        int menuID; 
-        
-        try {
-            stmt = c.prepareCall("{call CreateNewMenu(?, ?, ?, ?, ?, ?)}");
-            stmt.setInt( "mStatus", menu.getStatus() ); 
-            stmt.setInt("restaurantID", menu.getRestaurantID() ); 
-            stmt.setNString("menuName", menu.getName() ); 
-            stmt.setInt("startTime", menu.getTimeRanges()[0].getStartTime()); 
-            stmt.setInt("endTime", menu.getTimeRanges()[0].getEndTime() );  
-            stmt.registerOutParameter("menuID", Types.INTEGER); 
-
-            result = stmt.executeQuery(); 
-            
-            //get output param 
-            menuID = stmt.getInt("menuID"); 
-            menu.setMenuID( menuID ); 
-        }
-        catch(SQLException e){ 
-            System.out.printf("SQL Exception while executing CreateNewMenu.\n" + 
-                    "Exception: %s\n", e.toString() );
-        }
+        System.out.println("saveMenu is not implemented yet");
     }
 
-    /**
-     * saveMenuItem - saves the menuItem to the database.   
-     * @param menuID - the menu that contains the menuItem. 
-     * @param restaurantID - the restaurant associated with the restaurant.  
-     * @param menuItem - the menuItem object to add to the database. 
-     */
-    public static boolean saveMenuItem( int menuID, int restaurantID, MenuItem menuItem ){
-        Connection c = connectToDB(); 
-        CallableStatement stmt; 
-        ResultSet result; 
-
-        try {
-            stmt = c.prepareCall( "{call CreateNewMenuItem(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}" ); 
-            stmt.setInt("mID", menuID ); 
-            stmt.setNString("iName", menuItem.getName()); 
-            stmt.setString("idesc", menuItem.getDescription()); 
-            stmt.setString("iCategory", menuItem.getCategory()); 
-
-            List<MenuItem.Allergen> allergens = Arrays.asList(menuItem.getAllergens());
-            if( allergens.contains( MenuItem.Allergen.MEAT ) ){
-                stmt.setInt("iMeat", 1);  
-            } else { 
-                stmt.setInt("iMeat", 0); 
-            }
-
-            if( allergens.contains( MenuItem.Allergen.DAIRY ) ){
-                stmt.setInt("iDairy", 1);
-            } else {
-                stmt.setInt("iDairy", 0); 
-            }
-
-            if( allergens.contains( MenuItem.Allergen.GLUTEN ) ){
-                stmt.setInt("iGluten", 1); 
-            } else {
-                stmt.setInt("iGluten", 0); 
-            }
-
-            if( allergens.contains( MenuItem.Allergen.NUTS ) ){
-                stmt.setInt("iNuts", 1); 
-            } else {
-                stmt.setInt("iNuts", 0); 
-            }
-
-            if( allergens.contains( MenuItem.Allergen.SOY ) ){
-                stmt.setInt("iSoy", 1); 
-            } else {
-                stmt.setInt("iSoy", 0); 
-            }
-
-            stmt.setObject("iPrice",  menuItem.getPrice(), Types.DECIMAL, 2 ); 
-            stmt.registerOutParameter("menuItemID", Types.INTEGER); 
-
-            result = stmt.executeQuery(); 
-            
-            //get output param 
-            int menuItemID = stmt.getInt("menuItemID"); 
-            menuItem.setItemID( menuItemID ); 
-
-        }
-        catch( SQLException e ){
-            System.out.printf("SQL Exception while executing CreateNewMenuItem.\n" + 
-                    "Exception: %s\n", e.toString() );
-            return false; 
-        }
-        return true; 
-    }
-
-    /**
-     * getMenuTimes: gets the menuTimes for the specified menuID. 
-     * Calls the GetMenuTimes stored procedure. 
-     * @param menuID the menuID to get menu times for. 
-     */
-    public static ResultSet getMenuTimes( int menuID ){
-        Connection c = connectToDB(); 
-        CallableStatement stmt; 
-        ResultSet result = null;
-
-        try { 
-            stmt = c.prepareCall("{call GetMenuTimes(?)}"); 
-            stmt.setInt("mID", menuID ); 
-            result = stmt.executeQuery(); 
-            result.beforeFirst();  
-
-        } catch (SQLException e){
-            System.out.printf("SQL Exception while executing GetMenuTimes.\n" + 
-                    "Exception: %s\n", e.toString() );
-        }
-        return result; 
-    }
-
-    /**
-     * getMenuItems: gets the menu Items associated with a menuID. 
-     * @param menuID
-     * @return result set containing tuples of menu items.
-     */
     public static ResultSet getMenuItems( int menuID ) {
 
-        ResultSet result = null; 
-        Connection c = connectToDB(); 
+        System.out.println("getMenuItems is not implemented yet");
+        ResultSet result = null;
+        Connection c = connectToDB();
         CallableStatement stmt;
 
-        try { 
-            stmt = c.prepareCall("{call GetMenuItemByMenuId(?)}" ); 
-            stmt.setInt( "id", menuID);  
-
-            result = stmt.executeQuery(); 
-            result.beforeFirst(); 
-
+        try {
+            stmt = c.prepareCall("{call GetMenuItemsByMenuId(?)}" );
+            stmt.setInt( "id", menuID);
         } catch (SQLException e){
-            System.out.printf("SQL Exception while executing GetMenuItemsByMenuId\n" + 
-                    "Exception: %s\n", e.toString()); 
+            System.out.printf("SQL Exception while preparing getMenu stored Proceedure\n");
         }
         return result;
+
     }
 
-    public static boolean addUser(User user) {
+    public static void addUser(User user) {
 
         ResultSet result = null;
         Connection c = connectToDB();
@@ -258,12 +143,11 @@ public class DBUtil {
             stmt.setNString("token", user.getToken());
 
             result = stmt.executeQuery();
-            return true;
+            result.beforeFirst();
 
         } catch (SQLException e) {
             System.out.printf("SQL Exception while executing AddUser.\n" +
                     "Exception: %s\n", e.toString() );
-            return false; 
         }
     }
 
@@ -327,4 +211,10 @@ public class DBUtil {
             return true;
         }
     }
+
 }
+
+
+
+
+
