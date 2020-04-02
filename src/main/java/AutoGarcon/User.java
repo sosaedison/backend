@@ -9,6 +9,8 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
+    private String hashedPass;
     private String token;
 
     public User(int userID, String firstName, String lastName, String email) {
@@ -18,23 +20,13 @@ public class User {
         this.email = email;
     }
 
-    /**
-     * User - Empty constructor for user object. 
-     * For use in json deserialization. 
-     */
     public User(){
-        this.userID = -1;
-        this.firstName = "Default User";
+        this.userID = 0;
+        this.firstName = "";
         this.lastName = "";
         this.email = "";
-        this.token = ""; 
     }
-
     public int getUserID(){return this.userID;}
-    
-    public void setUserID( int userID ) {
-        this.userID = userID;
-    }
 
     public String getFirstName(){return this.firstName;}
 
@@ -43,6 +35,8 @@ public class User {
     public String getName(){return this.firstName+ " " + this.lastName;}
 
     public String getEmail(){return this.email;}
+
+    public void setHashedPass(String hashedPass) {this.hashedPass = hashedPass;}
 
     public void setToken(String token) {this.token = token;}
 
@@ -53,15 +47,6 @@ public class User {
     public void setEmail(String email) {this.email = email;}
 
     public String getToken() {return this.token;}
-
-    public boolean isDefault() {
-        if( this.firstName.equals( "Default User" ) ){
-            return true; 
-        }
-        else {
-            return false; 
-        }
-    }
 
     public static User userFromJson( String body ) {
 
@@ -78,7 +63,7 @@ public class User {
         return user;
     }
 
-    public boolean save() { return DBUtil.addUser(this);}
+    public void addUser() { DBUtil.addUser(this);}
 
     public String toString(){
         StringBuilder str = new StringBuilder();

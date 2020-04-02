@@ -26,22 +26,25 @@ import java.lang.reflect.Type;
  * the code is the primary source of truth. 
  * Meaning that it's possible for the documentation to be out of date 
  * But the code will always be current. 
+ *
+ *
  */
 public class Main {
 
+    final static String EMPTY = "";
 
     /*
      * Can implement custom 501 handling in the future. 
      */
     public static Object endpointNotImplemented( Request req, Response res ){
         res.status(501); 
-        return "Endpoint Not Implemented"; 
+        return res; 
     }
 
     public static Object serveStatic(Request req, Response res) {
         res.type("text/html");
         res.redirect("index.html", 201);
-        return "";
+        return res;
     }
 
 
@@ -49,45 +52,54 @@ public class Main {
     public static Object addMenu( Request req, Response res) {
   
         Menu menu = Menu.menuFromJson( req.body() );   
+        menu.save(); 
+        System.out.println(menu.toString());
 
-        System.out.printf("Printing Incoming menu:\n %s\n", menu.toString());
-        boolean saved = menu.save(); 
-
-        if (!menu.isDefault() && saved) {
+        if (menu.isEmpty()) {
             res.status(200);
-            return "Successfully recieved menu.";
         } else {
             res.status(500); 
-            return "Error recieving menu"; 
         }
+
+        return res; 
     }
 
+    public static Object addUser( Request req, Response response) {
+        String firstName;
+        String lastName;
+        String email;
+        String token;
+        User user = new User();
+        JsonObject object = new JsonParser().parse(req.body()).getAsJsonObject();
 
-    public static Object getMenu( Request req, Response res ){
+        if(req.body() == null) {
+            if (!object.get("tokenObj").getAsJsonObject().get("access_token").toString().equals(EMPTY)) {
+                firstName = object.get("profileObj").getAsJsonObject().get("givenName").toString();
+                lastName = object.get("profileObj").getAsJsonObject().get("familyName").toString();
+                email = object.get("profileObj").getAsJsonObject().get("email").toString();
+                token = object.get("tokenObj").getAsJsonObject().get("access_token").toString();
 
-        try{ 
-            int restaurantID = Integer.parseInt(req.params(":restaurantid")); 
-            res.status(200); 
-            return Menu.allMenus( restaurantID ); 
-        } catch( NumberFormatException nfe){
-            res.status(400); 
-            return "Failed to parse restaurantID as an integer."; 
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setEmail(email);
+                user.setToken(token);
+
+                user.addUser();
+
+                response.type("application/json");
+                JsonObject jo = new JsonObject();
+                jo.addProperty("firstName", user.getFirstName());
+                jo.addProperty("lastName", user.getLastName());
+                jo.addProperty("email", user.getEmail());
+                jo.addProperty("token", user.getToken());
+                return jo;
+            }
         }
-    }
-
-    public static Object addUser( Request req, Response res) {
-
-        User user = User.userFromJson( req.body() ); 
-        boolean saved = user.save(); 
-
-        if( !user.isDefault() && saved ){
-            res.status(200); 
-            return "Successfully recieved user."; 
-        } else {
-            res.status(500); 
-            return "Error receiving User"; 
-        }
-
+//        JsonObject jo = new JsonObject();
+//        jo.addProperty("STATUS", "500");
+//        jo.addProperty("MESSAGE","Request body is null or no token found!");
+        response.status(500);
+        return response;
     }
 
     public static void initRouter(){
@@ -97,9 +109,9 @@ public class Main {
         path("/api", () -> {
             path("/users", () -> {
                 before((request, response) -> {
-
+                    response.type("application/json");
                 });
-                post("/newuser", "application/json", Main::addUser, new JsonTransformer() );
+                post("/newuser", "*/*, application/json", Main::addUser);
                 path("/:userid", () -> {
                     get("", Main::endpointNotImplemented );
                     get("/favorites", Main::endpointNotImplemented);
@@ -107,7 +119,7 @@ public class Main {
                 });
             });
             path("/restaurant", () -> {
-                path("/:restaurantid", () -> {
+                path("/:resturantid", () -> {
                     get("", Main::endpointNotImplemented); 
                     get("/orders", Main::endpointNotImplemented);
                     get("/tables", Main::endpointNotImplemented); 
@@ -115,7 +127,7 @@ public class Main {
                     post("/orders/submit", Main::endpointNotImplemented); 
                     post("orders/complete", Main::endpointNotImplemented); 
                     path("/menu", () -> {
-                        get("", Main::getMenu, new JsonTransformer() ); 
+                        get("", Main::endpointNotImplemented ); 
                         post("/add", "application/json", Main::addMenu); 
                         post("/remove", Main::endpointNotImplemented); 
                     });
@@ -127,17 +139,19 @@ public class Main {
 
     public static void startServer() {
 
-        port(80);
-        // port(443); // HTTPS port
-		staticFiles.location("/public/build");
-        //secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
+        //port(80);
+        //port(443); // HTTPS port
+		staticFiles.location("/public");
+        ///secure("/home/ubuntu/env/keystore.jks","autogarcon", null, null); // HTTPS key configuration for spark
         initRouter(); 
         DBUtil.connectToDB();
+
+        //Menu test = new Menu( 1, 1); 
     }
 
 	public static void main(String[] args) {
-
         startServer(); 
+
 	}
 }
 

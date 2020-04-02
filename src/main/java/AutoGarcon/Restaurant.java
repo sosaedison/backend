@@ -1,18 +1,15 @@
 package AutoGarcon;
 
-import com.google.gson.Gson; 
-import com.google.gson.JsonSyntaxException; 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
  * Restaurant: This is a class that represents
- *  the information and functions needed for a restaurant.
+ *          the information and functions needed
+ *          for a restaurant.
  * @author Sosa Edison
- * @author Tyler Beverley
  */
 public class Restaurant {
 
@@ -22,13 +19,6 @@ public class Restaurant {
     private List<Menu> availableMenus;
     private List<Table> restaurantTables;
 
-
-    /**
-     * Restaurant - Creates a restaurant object. 
-     * @param restaurantID
-     * @param restaurantName 
-     * @param restaurantAddress
-     */
     public Restaurant(int restaurantID, String restaurantName, String restaurantAddress) {
         this.restaurantID = restaurantID;
         this.restaurantName = restaurantName;
@@ -36,30 +26,6 @@ public class Restaurant {
         this.availableMenus = new ArrayList<>();
         this.restaurantTables = new ArrayList<>();
 
-    }
-
-    /**
-     * Restaurant - empty restaurant constructor.  
-     * Used for 1st step in json deserialization. 
-     */
-    public Restaurant(){
-        this.restaurantID = -1; 
-        this.restaurantName = "Default Restaurant"; 
-        this.restaurantAddress = ""; 
-    }
-
-    public Restaurant RestaurantFromJson( String body){
-
-        Gson gson = new Gson(); 
-        Restaurant restaurant = new Restaurant(); 
-
-        try { 
-            restaurant = gson.fromJson( body, Restaurant.class );
-        } catch( JsonSyntaxException e ){
-            System.out.printf("Failed to deserialze the request body into a MenuItem object.\n" + 
-                    "Request body: %s\n. Exception: %s\n", body, e.toString() );
-        }
-        return restaurant; 
     }
 
     /**
